@@ -84,7 +84,7 @@
     <script src="{{ asset('AdminLTE-2/dist/js/adminlte.min.js') }}"></script>
     <!-- Validator -->
     <script src="{{ asset('js/validator.min.js') }}"></script>
-    <script src="{{ asset('js/Jquery-Price-Format-master/jquery.priceformat.min.js') }}"></script>
+    <script src="{{ asset('AdminLTE-2/priceFormat/jquery.priceformat.min.js') }}"></script>
 
     <script>
         function preview(selector, temporaryFile, width = 200)  {
