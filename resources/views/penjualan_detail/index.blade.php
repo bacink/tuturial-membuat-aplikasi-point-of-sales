@@ -120,7 +120,7 @@
                             <div class="form-group row">
                                 <label for="diterima" class="col-lg-2 control-label">Dibayar</label>
                                 <div class="col-lg-8">
-                                    <input type="number" id="diterima" class="form-control" name="diterima" value="{{ $penjualan->diterima ?? 0 }}">
+                                    <input  id="diterima" class="form-control price" name="diterima" value="{{ $penjualan->diterima ?? 0 }}">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -150,6 +150,13 @@
     let table, table2;
 
     $(function () {
+
+        $(".price").priceFormat({
+            prefix: 'Rp.',
+            centsLimit: 0,
+            thousandsSeparator: '.',
+        })
+
         $('body').addClass('sidebar-collapse');
 
         table = $('.table-penjualan').DataTable({
@@ -219,11 +226,13 @@
         });
 
         $('#diterima').on('input', function () {
-            if ($(this).val() == "") {
+            var diterima = $(this).unmask();
+
+            if ( diterima == "") {
                 $(this).val(0).select();
             }
 
-            loadForm($('#diskon').val(), $(this).val());
+            loadForm($('#diskon').val(), diterima);
         }).focus(function () {
             $(this).select();
         });

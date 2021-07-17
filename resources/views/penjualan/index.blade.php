@@ -22,7 +22,7 @@
                         <th>Total Item</th>
                         <th>Total Harga</th>
                         <th>Diskon</th>
-                        <th>Total Bayar</th>
+                        <th>Total Tagihan</th>
                         <th>Kasir</th>
                         <th width="15%"><i class="fa fa-cog"></i></th>
                     </thead>

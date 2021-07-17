@@ -1,5 +1,11 @@
 <?php
 
+function customAngka($harga){
+    $harga_str = preg_replace('/[^0-9]/', '', $harga);
+    $harga_int = (int) $harga_str;
+    return $harga_int;
+}
+
 function format_uang ($angka) {
     return number_format($angka, 0, ',', '.');
 }
