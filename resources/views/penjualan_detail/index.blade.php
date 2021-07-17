@@ -212,7 +212,13 @@
                     });
                 })
                 .fail(errors => {
-                    alert('Tidak dapat menyimpan data');
+
+                    alert(errors.responseText);
+
+                    if(errors.status == 406){
+                        $(this).val(0)
+                    }
+
                     return;
                 });
         });

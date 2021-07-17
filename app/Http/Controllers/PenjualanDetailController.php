@@ -27,7 +27,7 @@ class PenjualanDetailController extends Controller
             if (auth()->user()->level == 1) {
                 return redirect()->route('transaksi.baru');
             } else {
-                return redirect()->route('home');
+                return redirect()->route('transaksi.baru');
             }
         }
     }
@@ -97,7 +97,27 @@ class PenjualanDetailController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
+    {   
+        $detail = PenjualanDetail::with('produk')
+            ->where('id_penjualan_detail', $id)
+            ->get();
+      
+        $stok = 0;
+        
+        foreach($detail as $item):
+        
+            $stok += $item->produk->stok;
+        
+        endforeach;
+        
+        if($stok <=0){
+            return response()->json('Stok tidak cukup', 406);
+        }
+
+        if($request->jumlah > $stok){
+            return response()->json('Stok tidak cukup', 406);
+        }
+
         $detail = PenjualanDetail::find($id);
         $detail->jumlah = $request->jumlah;
         $detail->subtotal = $detail->harga_jual * $request->jumlah;
@@ -107,6 +127,7 @@ class PenjualanDetailController extends Controller
     public function destroy($id)
     {
         $detail = PenjualanDetail::find($id);
+
         $detail->delete();
 
         return response(null, 204);
