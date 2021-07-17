@@ -112,13 +112,13 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="bayar" class="col-lg-2 control-label">Bayar</label>
+                                <label for="bayar" class="col-lg-2 control-label">Total Tagihan</label>
                                 <div class="col-lg-8">
                                     <input type="text" id="bayarrp" class="form-control" readonly>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="diterima" class="col-lg-2 control-label">Diterima</label>
+                                <label for="diterima" class="col-lg-2 control-label">Dibayar</label>
                                 <div class="col-lg-8">
                                     <input type="number" id="diterima" class="form-control" name="diterima" value="{{ $penjualan->diterima ?? 0 }}">
                                 </div>
