@@ -17,7 +17,6 @@ class ProdukController extends Controller
     public function index()
     {
         $kategori = Kategori::all()->pluck('nama_kategori', 'id_kategori');
-
         return view('produk.index', compact('kategori'));
     }
 
@@ -81,9 +80,20 @@ class ProdukController extends Controller
         $produk = Produk::latest()->first() ?? new Produk();
         $request['kode_produk'] = 'P'. tambah_nol_didepan((int)$produk->id_produk +1, 6);
 
+        $harga_beli = customAngka($request->harga_beli);
+        $harga_jual = customAngka($request->harga_jual);
+        
+        $request['harga_beli'] = $harga_beli;
+        $request['harga_jual'] = $harga_jual;
+        
+        
+        if($harga_jual <= $harga_beli){    
+            return response()->json('Data gagal disimpan', 400);
+        }
+        
         $produk = Produk::create($request->all());
-
         return response()->json('Data berhasil disimpan', 200);
+
     }
 
     /**
@@ -120,6 +130,18 @@ class ProdukController extends Controller
     public function update(Request $request, $id)
     {
         $produk = Produk::find($id);
+
+        $harga_beli = customAngka($request->harga_beli);
+        $harga_jual = customAngka($request->harga_jual);
+        
+        $request['harga_beli'] = $harga_beli;
+        $request['harga_jual'] = $harga_jual;
+        
+        
+        if($harga_jual <= $harga_beli){    
+            return response()->json('Data gagal disimpan', 400);
+        }
+        
         $produk->update($request->all());
 
         return response()->json('Data berhasil disimpan', 200);

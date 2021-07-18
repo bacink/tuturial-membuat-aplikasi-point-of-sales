@@ -151,12 +151,6 @@
 
     $(function () {
 
-        $(".price").priceFormat({
-            prefix: 'Rp.',
-            centsLimit: 0,
-            thousandsSeparator: '.',
-        })
-
         $('body').addClass('sidebar-collapse');
 
         table = $('.table-penjualan').DataTable({

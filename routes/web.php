@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\{
     DashboardController,
+    HargaMemberController,
     KategoriController,
     LaporanController,
     ProdukController,
@@ -44,6 +45,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/produk/cetak-barcode', [ProdukController::class, 'cetakBarcode'])->name('produk.cetak_barcode');
         Route::resource('/produk', ProdukController::class);
 
+        Route::get('/harga-member/data', [HargaMemberController::class, 'data'])->name('harga-member.data');
+        Route::post('/harga-member/cetak-harga-member', [HargaMemberController::class, 'cetakHargaMember'])->name('harga-member.cetak_harga_member');
+        Route::resource('/harga-member', HargaMemberController::class);
+
         Route::get('/member/data', [MemberController::class, 'data'])->name('member.data');
         Route::post('/member/cetak-member', [MemberController::class, 'cetakMember'])->name('member.cetak_member');
         Route::resource('/member', MemberController::class);
@@ -71,9 +76,11 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::group(['middleware' => 'level:1,2'], function () {
+
         
-        Route::get('/penjualan/data', [PenjualanController::class, 'data'])->name('penjualan.data');
-        Route::get('/penjualan', [PenjualanController::class, 'index'])->name('penjualan.index');
+        Route::get('/penjualan/{id}/kasir', [PenjualanController::class, 'data'])->name('penjualan.kasir');        
+        // Route::get('/penjualan/kasir', [PenjualanController::class, 'kasir'])->name('penjualan.kasir');
+
         Route::get('/penjualan/{id}', [PenjualanController::class, 'show'])->name('penjualan.show');
         Route::delete('/penjualan/{id}', [PenjualanController::class, 'destroy'])->name('penjualan.destroy');
 

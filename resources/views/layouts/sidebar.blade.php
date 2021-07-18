@@ -40,6 +40,11 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('harga-member.index') }}">
+                    <i class="fa fa-tag"></i> <span>Harga Member</span>
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('supplier.index') }}">
                     <i class="fa fa-truck"></i> <span>Supplier</span>
                 </a>

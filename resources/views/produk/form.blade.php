@@ -1,6 +1,6 @@
 <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form">
     <div class="modal-dialog modal-lg" role="document">
-        <form action="" method="post" class="form-horizontal">
+        <form action="" method="post" class="form-horizontal" id="formProduk">
             @csrf
             @method('post')
 
@@ -40,14 +40,14 @@
                     <div class="form-group row">
                         <label for="harga_beli" class="col-lg-2 col-lg-offset-1 control-label">Harga Beli</label>
                         <div class="col-lg-6">
-                            <input type="number" name="harga_beli" id="harga_beli" class="form-control" required>
+                            <input type="text" name="harga_beli" id="harga_beli" class="form-control price" required>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="harga_jual" class="col-lg-2 col-lg-offset-1 control-label">Harga Jual</label>
                         <div class="col-lg-6">
-                            <input type="number" name="harga_jual" id="harga_jual" class="form-control" required>
+                            <input type="text" name="harga_jual" id="harga_jual" class="form-control price" required>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
@@ -74,3 +74,4 @@
         </form>
     </div>
 </div>
+

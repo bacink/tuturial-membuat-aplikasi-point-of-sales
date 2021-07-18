@@ -16,9 +16,18 @@ class PenjualanController extends Controller
         return view('penjualan.index');
     }
 
-    public function data()
+    public function data($id = null)
     {
-        $penjualan = Penjualan::with('member')->orderBy('id_penjualan', 'desc')->get();
+     
+        if(!empty($id)){
+            $penjualan = Penjualan::with('member')
+            ->where('id_user',$id)
+            ->orderBy('id_penjualan', 'desc')->get();
+            
+        }else{
+            $penjualan = Penjualan::with('member')->orderBy('id_penjualan', 'desc')->get();
+            
+        }
 
         return datatables()
             ->of($penjualan)

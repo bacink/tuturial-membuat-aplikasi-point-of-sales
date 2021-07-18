@@ -54,6 +54,7 @@
     let table;
 
     $(function () {
+
         table = $('.table').DataTable({
             processing: true,
             autoWidth: false,
@@ -129,6 +130,20 @@
             });
     }
 
+    $('#formProduk').submit(function(event) {
+
+    event.preventDefault(); //this will prevent the default submit
+
+    // your code here (But not asynchronous code such as Ajax because it does not wait for a response and move to the next line.)
+        harga_jual = $("#harga_jual").unmask();
+        harga_beli = $("#harga_beli").unmask();
+
+        if(parseInt(harga_jual) <= parseInt(harga_beli)){
+            alert('Harga Jual harus lebih besar dari harga beli')
+        }
+
+    })
+
     function deleteData(url) {
         if (confirm('Yakin ingin menghapus data terpilih?')) {
             $.post(url, {
@@ -177,5 +192,7 @@
                 .submit();
         }
     }
+
+
 </script>
 @endpush

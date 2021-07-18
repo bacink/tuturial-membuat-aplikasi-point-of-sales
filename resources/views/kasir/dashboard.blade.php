@@ -21,6 +21,7 @@
                 <a href="{{ route('transaksi.baru') }}" class="btn btn-success btn-lg">Transaksi Baru</a>
                 <br><br><br>
             </div>
+            @include('penjualan.kasir')
         </div>
     </div>
 </div>

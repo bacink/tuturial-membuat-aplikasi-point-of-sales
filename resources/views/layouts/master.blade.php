@@ -91,6 +91,17 @@
             $(selector).empty();
             $(selector).append(`<img src="${window.URL.createObjectURL(temporaryFile)}" width="${width}">`);
         }
+
+ 
+    
+    $(document).ready(function () {
+        $(".price").priceFormat({
+            prefix: 'Rp.',
+            centsLimit: 0,
+            thousandsSeparator: '.',
+        })    
+    });
+
     </script>
     @stack('scripts')
 </body>
