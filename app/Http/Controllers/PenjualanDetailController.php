@@ -124,6 +124,7 @@ class PenjualanDetailController extends Controller
         $detail->update();
     }
 
+
     public function destroy($id)
     {
         $detail = PenjualanDetail::find($id);

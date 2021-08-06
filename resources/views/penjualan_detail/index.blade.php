@@ -276,12 +276,12 @@
     function pilihMember(id, kode) {
         $('#id_member').val(id);
         $('#kode_member').val(kode);
-        $('#diskon').val('{{ $diskon }}');
+        $('#diskon').val(0);
         loadForm($('#diskon').val());
         $('#diterima').val(0).focus().select();
         hideMember();
     }
-
+    
     function hideMember() {
         $('#modal-member').modal('hide');
     }

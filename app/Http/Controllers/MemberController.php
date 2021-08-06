@@ -46,6 +46,27 @@ class MemberController extends Controller
             ->make(true);
     }
 
+    public function selection()
+    {
+        $member = Member::orderBy('kode_member')->get();
+
+        return datatables()
+            ->of($member)
+            ->addIndexColumn()
+            ->addColumn('kode_member', function ($member) {
+                return '<span class="label label-success">'. $member->kode_member .'<span>';
+            })
+            ->addColumn('aksi', function ($member) {
+                return '
+                <div class="btn-group">
+                    <a type="button" href="'. route('new.transaksi.member', $member->id_member).' " class="btn btn-xs btn-success btn-flat"><i class="fa fa-check"></i></a>
+                </div>
+                ';
+            })
+            ->rawColumns(['aksi', 'kode_member'])
+            ->make(true);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

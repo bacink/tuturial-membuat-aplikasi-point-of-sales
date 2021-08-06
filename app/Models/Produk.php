@@ -13,7 +13,13 @@ class Produk extends Model
     protected $primaryKey = 'id_produk';
     protected $guarded = [];
 
-    public function kategori(){
-        return $this->belongsTo(Kategori::class,'id_kategori','id_kategori');
+    public function kategori()
+    {
+        return $this->belongsTo(Kategori::class, 'id_kategori', 'id_kategori');
+    }
+
+    public function member()
+    {
+        return $this->belongsTo(HargaMember::class, 'id_produk', 'id_produk');
     }
 }

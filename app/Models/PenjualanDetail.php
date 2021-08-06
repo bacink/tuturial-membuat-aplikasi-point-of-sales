@@ -15,6 +15,10 @@ class PenjualanDetail extends Model
 
     public function produk()
     {
-        return $this->hasOne(Produk::class, 'id_produk', 'id_produk');
+        return $this->belongsTo(Produk::class, 'id_produk', 'id_produk');
+    }
+    public function penjualan()
+    {
+        return $this->belongsTo(Penjualan::class, 'id_penjualan', 'id_penjualan');
     }
 }

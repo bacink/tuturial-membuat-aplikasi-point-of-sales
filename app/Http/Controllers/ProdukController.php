@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HargaMember;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
 use App\Models\Produk;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use PDF;
 
 class ProdukController extends Controller
@@ -20,6 +23,22 @@ class ProdukController extends Controller
         return view('produk.index', compact('kategori'));
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function member($produk_id, $member_id)
+    {
+        try {
+            $data = HargaMember::whereIdMember($member_id)->whereIdProduk($produk_id)->with('produk')->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+
+            $data = Produk::findOrFail($produk_id);
+        }
+        return $data;
+    }
+
     public function data()
     {
         $produk = Produk::leftJoin('kategori', 'kategori.id_kategori', 'produk.id_kategori')
@@ -32,11 +51,11 @@ class ProdukController extends Controller
             ->addIndexColumn()
             ->addColumn('select_all', function ($produk) {
                 return '
-                    <input type="checkbox" name="id_produk[]" value="'. $produk->id_produk .'">
+                    <input type="checkbox" name="id_produk[]" value="' . $produk->id_produk . '">
                 ';
             })
             ->addColumn('kode_produk', function ($produk) {
-                return '<span class="label label-success">'. $produk->kode_produk .'</span>';
+                return '<span class="label label-success">' . $produk->kode_produk . '</span>';
             })
             ->addColumn('harga_beli', function ($produk) {
                 return format_uang($produk->harga_beli);
@@ -50,8 +69,8 @@ class ProdukController extends Controller
             ->addColumn('aksi', function ($produk) {
                 return '
                 <div class="btn-group">
-                    <button type="button" onclick="editForm(`'. route('produk.update', $produk->id_produk) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
-                    <button type="button" onclick="deleteData(`'. route('produk.destroy', $produk->id_produk) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                    <button type="button" onclick="editForm(`' . route('produk.update', $produk->id_produk) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                    <button type="button" onclick="deleteData(`' . route('produk.destroy', $produk->id_produk) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
                 </div>
                 ';
             })
@@ -78,22 +97,21 @@ class ProdukController extends Controller
     public function store(Request $request)
     {
         $produk = Produk::latest()->first() ?? new Produk();
-        $request['kode_produk'] = 'P'. tambah_nol_didepan((int)$produk->id_produk +1, 6);
+        $request['kode_produk'] = 'P' . tambah_nol_didepan((int)$produk->id_produk + 1, 6);
 
         $harga_beli = customAngka($request->harga_beli);
         $harga_jual = customAngka($request->harga_jual);
-        
+
         $request['harga_beli'] = $harga_beli;
         $request['harga_jual'] = $harga_jual;
-        
-        
-        if($harga_jual <= $harga_beli){    
+
+
+        if ($harga_jual <= $harga_beli) {
             return response()->json('Data gagal disimpan', 400);
         }
-        
+
         $produk = Produk::create($request->all());
         return response()->json('Data berhasil disimpan', 200);
-
     }
 
     /**
@@ -133,15 +151,15 @@ class ProdukController extends Controller
 
         $harga_beli = customAngka($request->harga_beli);
         $harga_jual = customAngka($request->harga_jual);
-        
+
         $request['harga_beli'] = $harga_beli;
         $request['harga_jual'] = $harga_jual;
-        
-        
-        if($harga_jual <= $harga_beli){    
+
+
+        if ($harga_jual <= $harga_beli) {
             return response()->json('Data gagal disimpan', 400);
         }
-        
+
         $produk->update($request->all());
 
         return response()->json('Data berhasil disimpan', 200);

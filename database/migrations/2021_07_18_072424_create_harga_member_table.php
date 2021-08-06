@@ -18,7 +18,7 @@ class CreateHargaMemberTable extends Migration
             $table->increments('id_harga_member');
             $table->integer('id_member');
             $table->integer('id_produk');
-            $table->integer('harga_member');
+            $table->integer('harga_jual');
             $table->timestamps();
         });
     }

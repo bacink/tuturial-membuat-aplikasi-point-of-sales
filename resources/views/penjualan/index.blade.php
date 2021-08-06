@@ -6,7 +6,7 @@
 
 @section('breadcrumb')
     @parent
-    <li class="active">Daftar Penjualan</li>
+    <li class="active">Daftar Transaksi</li>
 @endsection
 
 @section('content')
@@ -96,5 +96,8 @@
                 });
         }
     }
+
+    
+
 </script>
 @endpush

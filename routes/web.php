@@ -7,6 +7,8 @@ use App\Http\Controllers\{
     LaporanController,
     ProdukController,
     MemberController,
+    NewPenjualanController,
+    NewTransaksiController,
     PengeluaranController,
     PembelianController,
     PembelianDetailController,
@@ -16,6 +18,7 @@ use App\Http\Controllers\{
     SupplierController,
     UserController,
 };
+use App\Models\Produk;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,6 +53,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('/harga-member', HargaMemberController::class);
 
         Route::get('/member/data', [MemberController::class, 'data'])->name('member.data');
+        Route::get('/member/selection', [MemberController::class, 'selection'])->name('member.selection');
         Route::post('/member/cetak-member', [MemberController::class, 'cetakMember'])->name('member.cetak_member');
         Route::resource('/member', MemberController::class);
 
@@ -75,27 +79,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('/penjualan/{id}', [PenjualanController::class, 'destroy'])->name('penjualan.destroy');
     });
 
-    Route::group(['middleware' => 'level:1,2'], function () {
-
-        
-        Route::get('/penjualan/{id}/kasir', [PenjualanController::class, 'data'])->name('penjualan.kasir');        
-        // Route::get('/penjualan/kasir', [PenjualanController::class, 'kasir'])->name('penjualan.kasir');
-
-        Route::get('/penjualan/{id}', [PenjualanController::class, 'show'])->name('penjualan.show');
-        Route::delete('/penjualan/{id}', [PenjualanController::class, 'destroy'])->name('penjualan.destroy');
-
-        Route::get('/transaksi/baru', [PenjualanController::class, 'create'])->name('transaksi.baru');
-        Route::post('/transaksi/simpan', [PenjualanController::class, 'store'])->name('transaksi.simpan');
-        Route::get('/transaksi/selesai', [PenjualanController::class, 'selesai'])->name('transaksi.selesai');
-        Route::get('/transaksi/nota-kecil', [PenjualanController::class, 'notaKecil'])->name('transaksi.nota_kecil');
-        Route::get('/transaksi/nota-besar', [PenjualanController::class, 'notaBesar'])->name('transaksi.nota_besar');
-
-        Route::get('/transaksi/{id}/data', [PenjualanDetailController::class, 'data'])->name('transaksi.data');
-        Route::get('/transaksi/loadform/{diskon}/{total}/{diterima}', [PenjualanDetailController::class, 'loadForm'])->name('transaksi.load_form');
-        Route::resource('/transaksi', PenjualanDetailController::class)
-            ->except('create', 'show', 'edit');
-    });
-
     Route::group(['middleware' => 'level:1'], function () {
         Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
         Route::get('/laporan/data/{awal}/{akhir}', [LaporanController::class, 'data'])->name('laporan.data');
@@ -108,9 +91,53 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/setting/first', [SettingController::class, 'show'])->name('setting.show');
         Route::post('/setting', [SettingController::class, 'update'])->name('setting.update');
     });
- 
+
     Route::group(['middleware' => 'level:1,2'], function () {
         Route::get('/profil', [UserController::class, 'profil'])->name('user.profil');
         Route::post('/profil', [UserController::class, 'updateProfil'])->name('user.update_profil');
+    });
+
+    Route::group(['middleware' => 'level:1,2'], function () {
+        Route::get('/produk/{produk_id}/member/{member_id}', [ProdukController::class, 'member'])->name('produk.member');
+
+        Route::get('/penjualan/{id}/kasir', [PenjualanController::class, 'data'])->name('penjualan.kasir');
+        Route::get('/penjualan/{id}', [PenjualanController::class, 'show'])->name('penjualan.show');
+
+        Route::delete('/penjualan/{id}', [PenjualanController::class, 'destroy'])->name('penjualan.destroy');
+
+
+        Route::get('/transaksi/baru', [PenjualanController::class, 'create'])->name('transaksi.baru');
+
+        Route::post('/transaksi/simpan', [PenjualanController::class, 'store'])->name('transaksi.simpan');
+
+        Route::get('/transaksi/selesai', [PenjualanController::class, 'selesai'])->name('transaksi.selesai');
+        Route::get('/transaksi/nota-kecil', [PenjualanController::class, 'notaKecil'])->name('transaksi.nota_kecil');
+        Route::get('/transaksi/nota-besar', [PenjualanController::class, 'notaBesar'])->name('transaksi.nota_besar');
+
+        Route::get('/transaksi/{id}/data', [PenjualanDetailController::class, 'data'])->name('transaksi.data');
+        Route::get('/transaksi/loadform/{diskon}/{total}/{diterima}', [PenjualanDetailController::class, 'loadForm'])->name('transaksi.load_form');
+
+        Route::resource('/transaksi', PenjualanDetailController::class)
+            ->except('create', 'show', 'edit');
+
+        Route::name('new.transaksi.')->group(function () {
+            Route::resource('/new/transaksi', NewTransaksiController::class)
+                ->except('create', 'show', 'edit', 'delete');
+
+            Route::prefix('new')->group(function () {
+                Route::get('/transaksi/member/{id}', [NewTransaksiController::class, 'member'])->name('member');
+                Route::get('/transaksi/detail/{id}', [NewTransaksiController::class, 'detail'])->name('detail');
+                Route::get('/transaksi/{id}', [NewTransaksiController::class, 'show'])->name('show');
+                Route::get('/transaksi/delete/{id}', [NewTransaksiController::class, 'delete'])->name('delete');
+            });
+        });
+
+        Route::name('new.penjualan.')->group(function () {
+            Route::resource('/new/penjualan', NewPenjualanController::class)
+                ->except('create', 'show', 'edit');
+
+            Route::prefix('new')->group(function () {
+            });
+        });
     });
 });
