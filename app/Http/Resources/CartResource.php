@@ -19,9 +19,11 @@ class CartResource extends JsonResource
             'id_penjualan' => $this->id_penjualan,
             'id_produk' => $this->id_produk,
             'harga_jual' => $this->harga_jual,
+            'harga_jual_rp' => format_uang($this->harga_jual),
             'jumlah' => $this->jumlah,
             'diskon' => $this->diskon,
             'subtotal' => $this->subtotal,
+            'subtotal_rp' => format_uang($this->subtotal),
             'nama_produk' => $this->produk->nama_produk,
             'kode_produk' => $this->produk->kode_produk
         ];

@@ -242,14 +242,15 @@ Detail Transaksi
                         '<td>' + no + '</td>' +
                         '<td>' + row.kode_produk + '</td>' +
                         '<td>' + row.nama_produk + '</td>' +
-                        '<td>' + row.harga_jual + '</td>' +
+                        '<td class="price">' + row.harga_jual_rp + '</td>' +
                         '<td>' + row.jumlah + '</td>' +
-                        '<td>' + row.subtotal + '</td>' +
+                        '<td class="price">' + row.subtotal_rp + '</td>' +
                         '<td><a href="' + url + '" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a></td>' +
                         '</tr>')
                     total += parseInt(row.subtotal)
                 });
                 $("#total_tagihan").val(total)
+                $("#sisa_bayar").val(total)
             }
         });
     }

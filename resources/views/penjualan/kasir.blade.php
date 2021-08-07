@@ -25,8 +25,12 @@ Daftar Penjualan
                         <th>Nama Member</th>
                         <th>Total Item</th>
                         <th>Total Tagihan</th>
+                        <th>Total Bayar</th>
+                        <th>Piutang</th>
                         <th>Kasir</th>
-                        <th width="15%"><i class="fa fa-cog"></i></th>
+                        <th width="10%">
+                            <center><i class="fa fa-cog"></i></center>
+                        </th>
                     </thead>
                 </table>
             </div>
@@ -70,10 +74,17 @@ Daftar Penjualan
                     data: 'total_tagihan'
                 },
                 {
+                    data: 'total_bayar'
+                },
+                {
+                    data: 'piutang'
+                },
+                {
                     data: 'kasir'
                 },
                 {
                     data: 'aksi',
+                    class:'text-center',
                     searchable: false,
                     sortable: false
                 },

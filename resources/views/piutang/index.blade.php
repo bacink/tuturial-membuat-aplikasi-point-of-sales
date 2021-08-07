@@ -1,12 +1,12 @@
 @extends('layouts.master')
 
 @section('title')
-    Daftar Penjualan
+    Daftar Piutang
 @endsection
 
 @section('breadcrumb')
     @parent
-    <li class="active">Daftar Transaksi</li>
+    <li class="active">Daftar Piutang</li>
 @endsection
 
 @section('content')
@@ -18,13 +18,10 @@
                     <thead>
                         <th width="5%">No</th>
                         <th>Tanggal</th>
-                        <th>Kode Member</th>
-                        <th>Total Item</th>
                         <th>Total Tagihan</th>
                         <th>Total Bayar</th>
                         <th>Piutang</th>
-                        <th>Kasir</th>
-                        <th width="15%"><i class="fa fa-cog"></i></th>
+                        <th width="5%"><center><i class="fa fa-cog"></i></center></th>
                     </thead>
                 </table>
             </div>
@@ -32,7 +29,7 @@
     </div>
 </div>
 
-@includeIf('penjualan.detail')
+@includeIf('piutang.detail')
 @endsection
 
 @push('scripts')
@@ -44,18 +41,15 @@
             processing: true,
             autoWidth: false,
             ajax: {
-                url: '{{ route('penjualan.data') }}',
+                url: '{{ route('piutang.data') }}',
             },
             columns: [
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'tanggal'},
-                {data: 'kode_member'},
-                {data: 'total_item'},
                 {data: 'total_tagihan'},
                 {data: 'total_bayar'},
                 {data: 'piutang'},
-                {data: 'kasir'},
-                {data: 'aksi', searchable: false, sortable: false},
+                {data: 'aksi', searchable: false, sortable: false, class:"text-center"},
             ]
         });
 
@@ -65,11 +59,10 @@
             dom: 'Brt',
             columns: [
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
-                {data: 'kode_produk'},
-                {data: 'nama_produk'},
-                {data: 'harga_jual'},
-                {data: 'jumlah'},
-                {data: 'subtotal'},
+                {data: 'tanggal_bayar'},
+                {data: 'piutang'},
+                {data: 'bayar'},
+                {data: 'sisa'},
             ]
         })
     });

@@ -70,6 +70,11 @@
                     <i class="fa fa-cart-arrow-down"></i> <span>Transaksi</span>
                 </a>
             </li>
+            <li>
+                <a href="{{ route('piutang.index') }}">
+                    <i class="fa fa-cart-arrow-down"></i> <span>Piutang</span>
+                </a>
+            </li>
             <li class="header">REPORT</li>
             <li>
                 <a href="{{ route('laporan.index') }}">

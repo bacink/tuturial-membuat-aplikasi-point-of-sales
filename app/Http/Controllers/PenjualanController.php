@@ -24,7 +24,7 @@ class PenjualanController extends Controller
                 ->where('id_user', $id)
                 ->orderBy('id_penjualan', 'desc')->get();
         } else {
-            $penjualan = Penjualan::with('member')->orderBy('id_penjualan', 'desc')->get();
+            $penjualan = Penjualan::with('member','pembayaran')->orderBy('id_penjualan', 'desc')->get();
         }
 
         return datatables()
@@ -33,8 +33,18 @@ class PenjualanController extends Controller
             ->addColumn('total_item', function ($penjualan) {
                 return format_uang($penjualan->total_item);
             })
-            ->addColumn('bayar', function ($penjualan) {
-                return 'Rp. ' . format_uang($penjualan->bayar);
+            ->addColumn('total_tagihan', function ($penjualan) {
+                return 'Rp. ' . format_uang($penjualan->total_tagihan);
+            })
+            ->editColumn('total_bayar', function ($penjualan) {
+                $pembayaran = $penjualan->pembayaran;
+                return 'Rp. ' .format_uang($pembayaran->sum('bayar'));
+            })
+            ->editColumn('piutang', function ($penjualan) {
+                $pembayaran = $penjualan->pembayaran;
+                $piutang =  $penjualan->total_tagihan - $pembayaran->sum('bayar');
+
+                return 'Rp. ' .format_uang($piutang) ;
             })
             ->addColumn('tanggal', function ($penjualan) {
                 return tanggal_indonesia($penjualan->created_at, false);
@@ -50,6 +60,7 @@ class PenjualanController extends Controller
             ->editColumn('kasir', function ($penjualan) {
                 return $penjualan->user->name ?? '';
             })
+
             ->addColumn('aksi', function ($penjualan) {
                 return '
                 <div class="btn-group">

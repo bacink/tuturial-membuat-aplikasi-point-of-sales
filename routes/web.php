@@ -14,6 +14,7 @@ use App\Http\Controllers\{
     PembelianDetailController,
     PenjualanController,
     PenjualanDetailController,
+    PiutangController,
     SettingController,
     SupplierController,
     UserController,
@@ -139,5 +140,10 @@ Route::group(['middleware' => 'auth'], function () {
             Route::prefix('new')->group(function () {
             });
         });
+
+        Route::get('/piutang/data/', [PiutangController::class, 'data'])->name('piutang.data');
+        Route::get('/piutang/{id}', [PiutangController::class, 'show'])->name('piutang.show');
+        Route::get('/piutang', [PiutangController::class, 'index'])->name('piutang.index');
+
     });
 });
