@@ -247,7 +247,7 @@ Detail Transaksi
                         '<td>' + row.subtotal + '</td>' +
                         '<td><a href="' + url + '" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a></td>' +
                         '</tr>')
-                    total += row.subtotal
+                    total += parseInt(row.subtotal)
                 });
                 $("#total_tagihan").val(total)
             }
