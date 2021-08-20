@@ -1,12 +1,12 @@
 @extends('layouts.master')
 
 @section('title')
-    Daftar Member
+    Daftar Pelanggan
 @endsection
 
 @section('breadcrumb')
     @parent
-    <li class="active">Daftar Member</li>
+    <li class="active">Daftar Pelanggan</li>
 @endsection
 
 @section('content')
@@ -14,8 +14,8 @@
     <div class="col-lg-12">
         <div class="box">
             <div class="box-header with-border">
-                <button onclick="addForm('{{ route('member.store') }}')" class="btn btn-success btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button>
-                <button onclick="cetakMember('{{ route('member.cetak_member') }}')" class="btn btn-info btn-xs btn-flat"><i class="fa fa-id-card"></i> Cetak Member</button>
+                <button onclick="addForm('{{ route('member.store') }}')" class="btn btn-success btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah Pelanggan Baru</button>
+                <button onclick="cetakMember('{{ route('member.cetak_member') }}')" class="btn btn-info btn-xs btn-flat"><i class="fa fa-id-card"></i> Cetak Kartu Pelanggan</button>
             </div>
             <div class="box-body table-responsive">
                 <form action="" method="post" class="form-member">
@@ -26,8 +26,9 @@
                                 <input type="checkbox" name="select_all" id="select_all">
                             </th>
                             <th width="5%">No</th>
+                            <th>Dibuat</th>
                             <th>Kode</th>
-                            <th>Nama</th>
+                            <th>Nama Pelanggan</th>
                             <th>Telepon</th>
                             <th>Alamat</th>
                             <th width="15%"><i class="fa fa-cog"></i></th>
@@ -55,6 +56,7 @@
             },
             columns: [
                 {data: 'select_all', searchable: false, sortable: false},
+                {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'kode_member'},
                 {data: 'nama'},
@@ -85,7 +87,7 @@
 
     function addForm(url) {
         $('#modal-form').modal('show');
-        $('#modal-form .modal-title').text('Tambah Member');
+        $('#modal-form .modal-title').text('Tambah Pelanggan Baru');
 
         $('#modal-form form')[0].reset();
         $('#modal-form form').attr('action', url);
@@ -95,7 +97,7 @@
 
     function editForm(url) {
         $('#modal-form').modal('show');
-        $('#modal-form .modal-title').text('Edit Member');
+        $('#modal-form .modal-title').text('Edit Pelanggan');
 
         $('#modal-form form')[0].reset();
         $('#modal-form form').attr('action', url);

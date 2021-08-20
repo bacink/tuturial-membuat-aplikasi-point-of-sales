@@ -12,17 +12,28 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group row">
-                        <label for="deskripsi" class="col-lg-2 col-lg-offset-1 control-label">Deskripsi</label>
+                        <!-- Autocomplete / Case sensitive dari database -->
+                        <label for="deskripsi" class="col-lg-2 col-lg-offset-1 control-label">Judul Pengeluaran</label>
                         <div class="col-lg-6">
                             <input type="text" name="deskripsi" id="deskripsi" class="form-control" required autofocus>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
                     <div class="form-group row">
+                        <!-- Tambahkan Separator titik ribuan -->
                         <label for="nominal" class="col-lg-2 col-lg-offset-1 control-label">Nominal</label>
                         <div class="col-lg-6">
                             <input type="number" name="nominal" id="nominal" class="form-control" required>
                             <span class="help-block with-errors"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="nominal" class="col-lg-2 col-lg-offset-1 control-label">Bayar</label>
+                        <div class="col-lg-6">
+                            <select class="form-control" id="bayar">
+                                <option>Tunai</option>
+                                <option>Transfer</option>
+                            </select>
                         </div>
                     </div>
                 </div>

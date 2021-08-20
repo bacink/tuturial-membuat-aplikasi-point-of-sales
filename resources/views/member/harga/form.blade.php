@@ -12,10 +12,10 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group row">
-                        <label for="id_member" class="col-lg-2 col-lg-offset-1 control-label">Member</label>
+                        <label for="id_member" class="col-lg-2 col-lg-offset-1 control-label">Pelanggan</label>
                         <div class="col-lg-6">
                             <select name="id_member" id="id_member" class="form-control" required>
-                                <option value="">Pilih Member</option>
+                                <option value="">Pilih Pelanggan</option>
                                 @foreach ($member as $key => $item)
                                 <option value="{{ $key }}">{{ $item }}</option>
                                 @endforeach

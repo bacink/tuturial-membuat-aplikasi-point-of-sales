@@ -14,13 +14,15 @@
     <div class="col-lg-12">
         <div class="box">
             <div class="box-header with-border">
-                <button onclick="addForm('{{ route('kategori.store') }}')" class="btn btn-success btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button>
+                <button onclick="addForm('{{ route('kategori.store') }}')" class="btn btn-success btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah Kategori</button>
             </div>
             <div class="box-body table-responsive">
                 <table class="table table-stiped table-bordered">
                     <thead>
                         <th width="5%">No</th>
+                        <th>Dibuat</th>
                         <th>Kategori</th>
+                        <th>Jumlah Produk</th>
                         <th width="15%"><i class="fa fa-cog"></i></th>
                     </thead>
                 </table>
@@ -46,6 +48,8 @@
             columns: [
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'nama_kategori'},
+                {data: 'nama_kategori'},
+                {data: 'nama_kategori'},
                 {data: 'aksi', searchable: false, sortable: false},
             ]
         });
@@ -68,6 +72,7 @@
     function addForm(url) {
         $('#modal-form').modal('show');
         $('#modal-form .modal-title').text('Tambah Kategori');
+        $('#modal-form .modal-text').text('Tambah Kategori Baru');
 
         $('#modal-form form')[0].reset();
         $('#modal-form form').attr('action', url);
@@ -78,6 +83,7 @@
     function editForm(url) {
         $('#modal-form').modal('show');
         $('#modal-form .modal-title').text('Edit Kategori');
+        $('#modal-form .modal-text').text('Edit Nama Kategori');
 
         $('#modal-form form')[0].reset();
         $('#modal-form form').attr('action', url);

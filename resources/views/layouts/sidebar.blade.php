@@ -36,14 +36,14 @@
             </li>
             <li>
                 <a href="{{ route('member.index') }}">
-                    <i class="fa fa-id-card"></i> <span>Member</span>
+                    <i class="fa fa-id-card"></i> <span>Pelanggan</span>
                 </a>
             </li>
             <li>
                 <a href="{{ route('harga-member.index') }}">
-                    <i class="fa fa-tag"></i> <span>Harga Member</span>
+                    <i class="fa fa-tag"></i> <span>Harga Spesial</span>
                 </a>
-            </li>
+            </li>            
             <li>
                 <a href="{{ route('supplier.index') }}">
                     <i class="fa fa-truck"></i> <span>Supplier</span>

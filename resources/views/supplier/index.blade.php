@@ -14,12 +14,13 @@
     <div class="col-lg-12">
         <div class="box">
             <div class="box-header with-border">
-                <button onclick="addForm('{{ route('supplier.store') }}')" class="btn btn-success btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button>
+                <button onclick="addForm('{{ route('supplier.store') }}')" class="btn btn-success btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah Supplier Baru</button>
             </div>
             <div class="box-body table-responsive">
                 <table class="table table-stiped table-bordered">
                     <thead>
                         <th width="5%">No</th>
+                        <th>Dibuat</th>
                         <th>Nama</th>
                         <th>Telepon</th>
                         <th>Alamat</th>
@@ -46,6 +47,7 @@
                 url: '{{ route('supplier.data') }}',
             },
             columns: [
+                {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'nama'},
                 {data: 'telepon'},
