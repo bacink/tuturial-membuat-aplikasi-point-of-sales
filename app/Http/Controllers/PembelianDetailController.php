@@ -15,13 +15,12 @@ class PembelianDetailController extends Controller
         $id_pembelian = session('id_pembelian');
         $produk = Produk::orderBy('nama_produk')->get();
         $supplier = Supplier::find(session('id_supplier'));
-        $diskon = Pembelian::find($id_pembelian)->diskon ?? 0;
 
         if (! $supplier) {
             abort(404);
         }
 
-        return view('pembelian_detail.index', compact('id_pembelian', 'produk', 'supplier', 'diskon'));
+        return view('pembelian_detail.index', compact('id_pembelian', 'produk', 'supplier'));
     }
 
     public function data($id)
@@ -100,16 +99,4 @@ class PembelianDetailController extends Controller
         return response(null, 204);
     }
 
-    public function loadForm($diskon, $total)
-    {
-        $bayar = $total - ($diskon / 100 * $total);
-        $data  = [
-            'totalrp' => format_uang($total),
-            'bayar' => $bayar,
-            'bayarrp' => format_uang($bayar),
-            'terbilang' => ucwords(terbilang($bayar). ' Rupiah')
-        ];
-
-        return response()->json($data);
-    }
 }

@@ -6,7 +6,6 @@ use App\Models\HargaMember;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
 use App\Models\Produk;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use PDF;
 
@@ -98,21 +97,26 @@ class ProdukController extends Controller
      */
     public function store(Request $request)
     {
-        $produk = Produk::latest()->first() ?? new Produk();
-        $request['kode_produk'] = 'P' . tambah_nol_didepan((int)$produk->id_produk + 1, 6);
+        $produk = new Produk();
+        
+        $request->validate([
+            'nama_produk' => 'required|unique:produk|max:255',
+        ]);
+
+        $kode_produk = 'P' . tambah_nol_didepan((int)$produk->id_produk + 1, 6);
 
         $harga_beli = customAngka($request->harga_beli);
         $harga_jual = customAngka($request->harga_jual);
 
-        $request['harga_beli'] = $harga_beli;
-        $request['harga_jual'] = $harga_jual;
-
-
         if ($harga_jual <= $harga_beli) {
             return response()->json('Data gagal disimpan', 400);
         }
-
-        $produk = Produk::create($request->all());
+        $produk->id_kategori = $request->id_kategori;
+        $produk->kode_produk = $kode_produk;
+        $produk->nama_produk = $request->nama_produk;
+        $produk->merk = $request->merk;
+        $produk->harga_jual = $harga_jual;
+        $produk->save();
         return response()->json('Data berhasil disimpan', 200);
     }
 

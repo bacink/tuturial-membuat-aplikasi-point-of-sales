@@ -21,7 +21,6 @@ class CartResource extends JsonResource
             'harga_jual' => $this->harga_jual,
             'harga_jual_rp' => format_uang($this->harga_jual),
             'jumlah' => $this->jumlah,
-            'diskon' => $this->diskon,
             'subtotal' => $this->subtotal,
             'subtotal_rp' => format_uang($this->subtotal),
             'nama_produk' => $this->produk->nama_produk,

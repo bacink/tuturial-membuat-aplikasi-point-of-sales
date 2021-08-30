@@ -20,7 +20,6 @@ class SettingTableSeeder extends Seeder
             'alamat' => 'Jl. Kibandang Samaran Ds. Slangit',
             'telepon' => '081234779987',
             'tipe_nota' => 1, // kecil
-            'diskon' => 5,
             'path_logo' => '/img/logo.png',
             'path_kartu_member' => '/img/member.png',
         ]);

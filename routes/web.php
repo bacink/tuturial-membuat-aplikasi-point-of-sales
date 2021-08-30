@@ -70,7 +70,7 @@ Route::group(['middleware' => 'auth'], function () {
             ->except('create');
 
         Route::get('/pembelian_detail/{id}/data', [PembelianDetailController::class, 'data'])->name('pembelian_detail.data');
-        Route::get('/pembelian_detail/loadform/{diskon}/{total}', [PembelianDetailController::class, 'loadForm'])->name('pembelian_detail.load_form');
+        Route::get('/pembelian_detail/loadform/{total}', [PembelianDetailController::class, 'loadForm'])->name('pembelian_detail.load_form');
         Route::resource('/pembelian_detail', PembelianDetailController::class)
             ->except('create', 'show', 'edit');
 
@@ -116,7 +116,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/transaksi/nota-besar', [PenjualanController::class, 'notaBesar'])->name('transaksi.nota_besar');
 
         Route::get('/transaksi/{id}/data', [PenjualanDetailController::class, 'data'])->name('transaksi.data');
-        Route::get('/transaksi/loadform/{diskon}/{total}/{diterima}', [PenjualanDetailController::class, 'loadForm'])->name('transaksi.load_form');
+        Route::get('/transaksi/loadform/{total}/{diterima}', [PenjualanDetailController::class, 'loadForm'])->name('transaksi.load_form');
 
         Route::resource('/transaksi', PenjualanDetailController::class)
             ->except('create', 'show', 'edit');
@@ -141,9 +141,10 @@ Route::group(['middleware' => 'auth'], function () {
             });
         });
 
+        Route::get('/piutang/bayar/{piutang}', [PiutangController::class, 'showBayar'])->name('piutang.bayar.show');
+        Route::post('/piutang/bayar/{piutang}', [PiutangController::class, 'bayar'])->name('piutang.bayar');
         Route::get('/piutang/data/', [PiutangController::class, 'data'])->name('piutang.data');
-        Route::get('/piutang/{id}', [PiutangController::class, 'show'])->name('piutang.show');
-        Route::get('/piutang', [PiutangController::class, 'index'])->name('piutang.index');
+        Route::resource('/piutang', PiutangController::class);
 
     });
 });

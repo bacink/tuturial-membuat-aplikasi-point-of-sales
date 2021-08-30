@@ -36,7 +36,6 @@
                             <th>Merk</th>
                             <th>Harga Beli</th>
                             <th>Harga Jual</th>
-                            <th>Diskon</th>
                             <th>Stok</th>
                             <th width="15%"><i class="fa fa-cog"></i></th>
                         </thead>
@@ -72,7 +71,6 @@
                 {data: 'merk'},
                 {data: 'harga_beli'},
                 {data: 'harga_jual'},
-                {data: 'diskon'},
                 {data: 'stok'},
                 {data: 'aksi', searchable: false, sortable: false},
             ]
@@ -123,10 +121,9 @@
                 $('#modal-form [name=merk]').val(response.merk);
                 $('#modal-form [name=harga_beli]').val(response.harga_beli);
                 $('#modal-form [name=harga_jual]').val(response.harga_jual);
-                $('#modal-form [name=diskon]').val(response.diskon);
             })
-            .fail((errors) => {
-                alert('Tidak dapat menampilkan data');
+            .fail((err) => {
+                alert(err.response);
                 return;
             });
     }

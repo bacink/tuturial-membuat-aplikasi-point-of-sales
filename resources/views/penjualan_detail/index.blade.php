@@ -66,7 +66,6 @@
                         <th>Nama</th>
                         <th>Harga</th>
                         <th width="15%">Jumlah</th>
-                        <th>Diskon</th>
                         <th>Subtotal</th>
                         <th width="15%"><i class="fa fa-cog"></i></th>
                     </thead>
@@ -103,14 +102,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label for="diskon" class="col-lg-2 control-label">Diskon</label>
-                                <div class="col-lg-8">
-                                    <input type="number" name="diskon" id="diskon" class="form-control" 
-                                        value="{{ ! empty($memberSelected->id_member) ? $diskon : 0 }}" 
-                                        readonly>
-                                </div>
-                            </div>
+                      
                             <div class="form-group row">
                                 <label for="bayar" class="col-lg-2 control-label">Total Tagihan</label>
                                 <div class="col-lg-8">
@@ -165,7 +157,6 @@
                 {data: 'nama_produk'},
                 {data: 'harga_jual'},
                 {data: 'jumlah'},
-                {data: 'diskon'},
                 {data: 'subtotal'},
                 {data: 'aksi', searchable: false, sortable: false},
             ],
@@ -173,7 +164,6 @@
             bSort: false,
         })
         .on('draw.dt', function () {
-            loadForm($('#diskon').val());
             setTimeout(() => {
                 $('#diterima').trigger('input');
             }, 300);
@@ -202,7 +192,6 @@
                 })
                 .done(response => {
                     $(this).on('mouseout', function () {
-                        table.ajax.reload(() => loadForm($('#diskon').val()));
                     });
                 })
                 .fail(errors => {
@@ -217,13 +206,7 @@
                 });
         });
 
-        $(document).on('input', '#diskon', function () {
-            if ($(this).val() == "") {
-                $(this).val(0).select();
-            }
-
-            loadForm($(this).val());
-        });
+    
 
         $('#diterima').on('input', function () {
             var diterima = $(this).unmask();
@@ -232,7 +215,7 @@
                 $(this).val(0).select();
             }
 
-            loadForm($('#diskon').val(), diterima);
+            loadForm($(diterima);
         }).focus(function () {
             $(this).select();
         });
@@ -261,7 +244,7 @@
         $.post('{{ route('transaksi.store') }}', $('.form-produk').serialize())
             .done(response => {
                 $('#kode_produk').focus();
-                table.ajax.reload(() => loadForm($('#diskon').val()));
+                table.ajax.reload(() => loadForm());
             })
             .fail(errors => {
                 alert('Tidak dapat menyimpan data');
@@ -276,8 +259,7 @@
     function pilihMember(id, kode) {
         $('#id_member').val(id);
         $('#kode_member').val(kode);
-        $('#diskon').val(0);
-        loadForm($('#diskon').val());
+        loadForm();
         $('#diterima').val(0).focus().select();
         hideMember();
     }
@@ -293,7 +275,7 @@
                     '_method': 'delete'
                 })
                 .done((response) => {
-                    table.ajax.reload(() => loadForm($('#diskon').val()));
+                    table.ajax.reload(() => loadForm());
                 })
                 .fail((errors) => {
                     alert('Tidak dapat menghapus data');
@@ -302,11 +284,11 @@
         }
     }
 
-    function loadForm(diskon = 0, diterima = 0) {
+    function loadForm( diterima = 0) {
         $('#total').val($('.total').text());
         $('#total_item').val($('.total_item').text());
 
-        $.get(`{{ url('/transaksi/loadform') }}/${diskon}/${$('.total').text()}/${diterima}`)
+        $.get(`{{ url('/transaksi/loadform') }}/${$('.total').text()}/${diterima}`)
             .done(response => {
                 $('#totalrp').val('Rp. '+ response.totalrp);
                 $('#bayarrp').val('Rp. '+ response.bayarrp);

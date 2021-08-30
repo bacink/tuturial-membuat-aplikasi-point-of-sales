@@ -61,7 +61,6 @@ Detail Transaksi
                                         <div class="input-group">
                                             <input type="hidden" name="id_member" id="id_member" value="{{$member->id_member}}">
                                             <input type="hidden" name="id_produk" id="id_produk">
-                                            <input type="hidden" name="diskon" id="diskon" value="0">
                                             <input type="hidden" name="id_penjualan" id="id_penjualan" value="{{$penjualan->id_penjualan}}">
                                             <input type="text" class="form-control" name="kode_produk" id="kode_produk" readonly>
                                             <span class="input-group-btn">

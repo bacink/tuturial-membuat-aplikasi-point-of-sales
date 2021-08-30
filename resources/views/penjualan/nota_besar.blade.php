@@ -54,7 +54,6 @@
                 <th>Nama</th>
                 <th>Harga Satuan</th>
                 <th>Jumlah</th>
-                <th>Diskon</th>
                 <th>Subtotal</th>
             </tr>
         </thead>
@@ -66,7 +65,6 @@
                     <td>{{ $item->produk->kode_produk }}</td>
                     <td class="text-right">{{ format_uang($item->harga_jual) }}</td>
                     <td class="text-right">{{ format_uang($item->jumlah) }}</td>
-                    <td class="text-right">{{ $item->diskon }}</td>
                     <td class="text-right">{{ format_uang($item->subtotal) }}</td>
                 </tr>
             @endforeach
@@ -76,10 +74,7 @@
                 <td colspan="6" class="text-right"><b>Total Harga</b></td>
                 <td class="text-right"><b>{{ format_uang($penjualan->total_harga) }}</b></td>
             </tr>
-            <tr>
-                <td colspan="6" class="text-right"><b>Diskon</b></td>
-                <td class="text-right"><b>{{ format_uang($penjualan->diskon) }}</b></td>
-            </tr>
+     
             <tr>
                 <td colspan="6" class="text-right"><b>Total Bayar</b></td>
                 <td class="text-right"><b>{{ format_uang($penjualan->bayar) }}</b></td>

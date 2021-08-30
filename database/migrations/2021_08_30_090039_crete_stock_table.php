@@ -1,10 +1,11 @@
 <?php
 
+use App\Models\Stock;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class BuatProdukTable extends Migration
+class CreteStockTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +14,13 @@ class BuatProdukTable extends Migration
      */
     public function up()
     {
-        Schema::create('produk', function (Blueprint $table) {
-            $table->increments('id_produk');
-            $table->integer('id_kategori');
-            $table->string('nama_produk')->unique();
-            $table->string('merk')->nullable();
-            $table->integer('harga_jual');
+        Schema::create((new Stock())->getTable(), function (Blueprint $table) {
+            $table->increments('id_stock');
+            $table->unsignedInteger('id_produk');
+            $table->integer('qty');
             $table->timestamps();
+            $table->softDeletes();
+            $table->foreign('id_produk')->references('id_produk')->on('produk');
         });
     }
 
@@ -30,6 +31,6 @@ class BuatProdukTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('produk');
+        //
     }
 }

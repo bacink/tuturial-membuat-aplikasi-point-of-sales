@@ -79,7 +79,6 @@ class PenjualanController extends Controller
         $penjualan->id_member = null;
         $penjualan->total_item = 0;
         $penjualan->total_harga = 0;
-        $penjualan->diskon = 0;
         $penjualan->bayar = 0;
         $penjualan->diterima = 0;
         $penjualan->id_user = auth()->id();
@@ -95,7 +94,6 @@ class PenjualanController extends Controller
         $penjualan->id_member = $request->id_member;
         $penjualan->total_item = $request->total_item;
         $penjualan->total_harga = $request->total;
-        $penjualan->diskon = $request->diskon;
         $penjualan->bayar = $request->bayar;
         $penjualan->diterima = customAngka($request->diterima);
         $penjualan->update();
@@ -103,7 +101,6 @@ class PenjualanController extends Controller
 
         $detail = PenjualanDetail::where('id_penjualan', $penjualan->id_penjualan)->get();
         foreach ($detail as $item) {
-            $item->diskon = $request->diskon;
             $item->update();
 
             $produk = Produk::find($item->id_produk);

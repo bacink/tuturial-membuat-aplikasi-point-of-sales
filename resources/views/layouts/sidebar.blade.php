@@ -12,7 +12,7 @@
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
         </div>
-        
+
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
@@ -43,7 +43,7 @@
                 <a href="{{ route('harga-member.index') }}">
                     <i class="fa fa-tag"></i> <span>Harga Spesial</span>
                 </a>
-            </li>            
+            </li>
             <li>
                 <a href="{{ route('supplier.index') }}">
                     <i class="fa fa-truck"></i> <span>Supplier</span>
@@ -60,11 +60,7 @@
                     <i class="fa fa-download"></i> <span>Pembelian</span>
                 </a>
             </li>
-            <li>
-                <a href="{{ route('penjualan.index') }}">
-                    <i class="fa fa-upload"></i> <span>Penjualan</span>
-                </a>
-            </li>
+
             <li>
                 <a href="{{ route('new.transaksi.transaksi.index') }}">
                     <i class="fa fa-cart-arrow-down"></i> <span>Transaksi</span>
@@ -77,10 +73,16 @@
             </li>
             <li class="header">REPORT</li>
             <li>
+                <a href="{{ route('penjualan.index') }}">
+                    <i class="fa fa-file-pdf-o"></i> <span>Penjualan</span>
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('laporan.index') }}">
                     <i class="fa fa-file-pdf-o"></i> <span>Laporan</span>
                 </a>
             </li>
+
             <li class="header">SYSTEM</li>
             <li>
                 <a href="{{ route('user.index') }}">

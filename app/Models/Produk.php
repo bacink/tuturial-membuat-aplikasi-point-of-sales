@@ -22,4 +22,9 @@ class Produk extends Model
     {
         return $this->belongsTo(HargaMember::class, 'id_produk', 'id_produk');
     }
+
+    public function stock()
+    {
+        return $this->hasOne(Stock::class,'id_produk','id_produk');
+    }
 }

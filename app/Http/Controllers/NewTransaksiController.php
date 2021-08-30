@@ -68,7 +68,6 @@ class NewTransaksiController extends Controller
         $data->id_produk = $request->id_produk;
         $data->harga_jual = customAngka($request->harga_jual);
         $data->jumlah = $request->jumlah;
-        $data->diskon = $request->diskon;
         $data->subtotal = customAngka($request->subtotal);
         $data->save();
         return redirect()->route('new.transaksi.detail', $request->id_member)->with(

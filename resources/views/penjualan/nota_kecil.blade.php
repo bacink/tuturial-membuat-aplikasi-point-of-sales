@@ -93,10 +93,7 @@
             <td>Total Item:</td>
             <td class="text-right">{{ format_uang($penjualan->total_item) }}</td>
         </tr>
-        <tr>
-            <td>Diskon:</td>
-            <td class="text-right">{{ format_uang($penjualan->diskon) }}</td>
-        </tr>
+   
         <tr>
             <td>Total Bayar:</td>
             <td class="text-right">{{ format_uang($penjualan->bayar) }}</td>
