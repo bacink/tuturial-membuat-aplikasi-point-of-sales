@@ -43,7 +43,7 @@ class HargaMemberController extends Controller
         }
 
         $member = new HargaMember();
-        $member->harga_member = customAngka($request->harga_member);
+        $member->harga_jual = customAngka($request->harga_member);
         $member->id_member = $request->id_member;
         $member->id_produk = $request->id_produk;
         
@@ -94,7 +94,7 @@ class HargaMemberController extends Controller
         }
         $produk->id_member = $request->id_member;
         $produk->id_produk = $request->id_produk;
-        $produk->harga_member = $harga_member;
+        $produk->harga_jual = $harga_member;
             
         $produk->save();
 
@@ -135,7 +135,7 @@ class HargaMemberController extends Controller
             })
             
             ->addColumn('harga_member', function ($member) {
-                return  format_uang($member->harga_member);
+                return  format_uang($member->harga_jual);
             })
 
             ->addColumn('aksi', function ($member) {

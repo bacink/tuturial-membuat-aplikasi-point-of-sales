@@ -14,9 +14,8 @@ class ProdukTableSeeder extends Seeder
      */
     public function run()
     {
-        $produk = Produk::latest()->first() ?? new Produk();
 
-        $produk = [
+        $produks = [
                 [
                     'id_kategori' => 1,
                     'kode_produk'=> 'P'. tambah_nol_didepan((int)1, 6),
@@ -32,6 +31,10 @@ class ProdukTableSeeder extends Seeder
                     'harga_jual'=>35000,
                 ],
             ];
-            Produk::insert($produk);
+            array_map(function (array $produk) {
+                Produk::query()->updateOrCreate(
+                    $produk
+                );
+            }, $produks);
         }
 }

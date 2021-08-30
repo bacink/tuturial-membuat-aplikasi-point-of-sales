@@ -14,7 +14,7 @@ class SettingTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('setting')->insert([
+        DB::table('setting')->updateOrInsert([
             'id_setting' => 1,
             'nama_perusahaan' => 'Toko Ku',
             'alamat' => 'Jl. Kibandang Samaran Ds. Slangit',

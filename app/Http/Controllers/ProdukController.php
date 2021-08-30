@@ -40,7 +40,9 @@ class ProdukController extends Controller
 
     public function data()
     {
-        $produk = Produk::leftJoin('kategori', 'kategori.id_kategori', 'produk.id_kategori')
+        $produk = Produk::leftJoin(
+            'kategori', 'kategori.id_kategori', 'produk.id_kategori'
+            )
             ->select('produk.*', 'nama_kategori')
             ->orderBy('kode_produk', 'asc')
             ->get();
@@ -97,13 +99,14 @@ class ProdukController extends Controller
      */
     public function store(Request $request)
     {
+        $kode = Produk::latest()->first();
         $produk = new Produk();
-        
+
         $request->validate([
             'nama_produk' => 'required|unique:produk|max:255',
         ]);
 
-        $kode_produk = 'P' . tambah_nol_didepan((int)$produk->id_produk + 1, 6);
+        $kode_produk = 'P' . tambah_nol_didepan((int)$kode->id_produk + 1, 6);
 
         $harga_beli = customAngka($request->harga_beli);
         $harga_jual = customAngka($request->harga_jual);

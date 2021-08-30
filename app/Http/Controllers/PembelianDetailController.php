@@ -36,7 +36,7 @@ class PembelianDetailController extends Controller
             $row = array();
             $row['kode_produk'] = '<span class="label label-success">'. $item->produk['kode_produk'] .'</span';
             $row['nama_produk'] = $item->produk['nama_produk'];
-            $row['harga_beli']  = 'Rp. '. format_uang($item->harga_beli);
+            $row['harga_beli']  = '<input type="text" class="form-control price" value="Rp.'.format_uang($item->harga_beli).'">';
             $row['jumlah']      = '<input type="number" class="form-control input-sm quantity" data-id="'. $item->id_pembelian_detail .'" value="'. $item->jumlah .'">';
             $row['subtotal']    = 'Rp. '. format_uang($item->subtotal);
             $row['aksi']        = '<div class="btn-group">
@@ -61,7 +61,7 @@ class PembelianDetailController extends Controller
         return datatables()
             ->of($data)
             ->addIndexColumn()
-            ->rawColumns(['aksi', 'kode_produk', 'jumlah'])
+            ->rawColumns(['aksi', 'kode_produk','harga_beli', 'jumlah'])
             ->make(true);
     }
 
@@ -71,23 +71,37 @@ class PembelianDetailController extends Controller
         if (! $produk) {
             return response()->json('Data gagal disimpan', 400);
         }
+        $lastPembelian = PembelianDetail::where('id_pembelian',$request->id_pembelian)->where('id_produk',$request->id_produk)->first();
 
-        $detail = new PembelianDetail();
-        $detail->id_pembelian = $request->id_pembelian;
-        $detail->id_produk = $produk->id_produk;
-        $detail->harga_beli = $produk->harga_beli;
-        $detail->jumlah = 1;
-        $detail->subtotal = $produk->harga_beli;
-        $detail->save();
+        if (! $lastPembelian) {
 
-        return response()->json('Data berhasil disimpan', 200);
+            $detail = new PembelianDetail();
+            $detail->id_pembelian = $request->id_pembelian;
+            $detail->id_produk = $produk->id_produk;
+            $detail->harga_beli = 0;
+            $detail->jumlah = 1;
+            $detail->subtotal = 0;
+            $detail->save();
+    
+            return response()->json('Data berhasil disimpan', 200);
+        }
+
+        $harga_beli = $lastPembelian->harga_beli;
+        $jumlah = $lastPembelian->jumlah + 1;
+
+        $lastPembelian->harga_beli = $harga_beli;
+        $lastPembelian->jumlah = $jumlah;
+        $lastPembelian->subtotal = $harga_beli*$jumlah;
+        $lastPembelian->save();
+
     }
 
     public function update(Request $request, $id)
     {
         $detail = PembelianDetail::find($id);
+        $detail->harga_beli = $request->harga_beli;
         $detail->jumlah = $request->jumlah;
-        $detail->subtotal = $detail->harga_beli * $request->jumlah;
+        $detail->subtotal = $request->harga_beli * $request->jumlah;
         $detail->update();
     }
 

@@ -145,7 +145,9 @@
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'kode_produk'},
                 {data: 'nama_produk'},
-                {data: 'harga_beli'},
+                {   class:'harga_beli',
+                    data: 'harga_beli'
+                },
                 {data: 'jumlah'},
                 {data: 'subtotal'},
                 {data: 'aksi', searchable: false, sortable: false},
@@ -154,18 +156,34 @@
             bSort: false,
         })
         .on('draw.dt', function () {
+            $(".price").priceFormat({
+                prefix: 'Rp.',
+                centsLimit: 0,
+                thousandsSeparator: '.',
+            })  
         });
+
         table2 = $('.table-produk').DataTable();
 
         $(document).on('input', '.quantity', function () {
+            
             let id = $(this).data('id');
+            
+            let harga_beli = $(this).closest('tr').children('td.harga_beli').find("input").unmask()
+            
             let jumlah = parseInt($(this).val());
-
+            
+            if (harga_beli < 1) {
+                alert('Harga Beli tidak boleh kosong');
+                return;
+            }
+            
             if (jumlah < 1) {
                 $(this).val(1);
                 alert('Jumlah tidak boleh kurang dari 1');
                 return;
             }
+
             if (jumlah > 10000) {
                 $(this).val(10000);
                 alert('Jumlah tidak boleh lebih dari 10000');
@@ -175,10 +193,13 @@
             $.post(`{{ url('/pembelian_detail') }}/${id}`, {
                     '_token': $('[name=csrf-token]').attr('content'),
                     '_method': 'put',
-                    'jumlah': jumlah
+                    'jumlah': jumlah,
+                    'harga_beli':harga_beli
                 })
                 .done(response => {
-              
+                    table.ajax.reload();
+                    loadForm()
+
                 })
                 .fail(errors => {
                     alert('Tidak dapat menyimpan data');
@@ -198,6 +219,7 @@
 
     function hideProduk() {
         $('#modal-produk').modal('hide');
+       
     }
 
     function pilihProduk(id, kode) {
@@ -211,6 +233,8 @@
         $.post('{{ route('pembelian_detail.store') }}', $('.form-produk').serialize())
             .done(response => {
                 $('#kode_produk').focus();
+                table.ajax.reload();
+                loadForm()
             })
             .fail(errors => {
                 alert('Tidak dapat menyimpan data');
@@ -225,6 +249,9 @@
                     '_method': 'delete'
                 })
                 .done((response) => {
+                    table.ajax.reload();
+                    loadForm()
+
                 })
                 .fail((errors) => {
                     alert('Tidak dapat menghapus data');

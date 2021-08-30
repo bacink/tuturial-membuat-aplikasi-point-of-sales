@@ -11,5 +11,5 @@ class Member extends Model
 
     protected $table = 'member';
     protected $primaryKey = 'id_member';
-    protected $guarded = [];
+    protected $guarded = ['created_at','updated_at'];
 }

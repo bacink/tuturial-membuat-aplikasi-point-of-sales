@@ -58,7 +58,6 @@ class PembelianController extends Controller
         $pembelian->id_supplier = $id;
         $pembelian->total_item  = 0;
         $pembelian->total_harga = 0;
-        $pembelian->bayar       = 0;
         $pembelian->save();
 
         session(['id_pembelian' => $pembelian->id_pembelian]);

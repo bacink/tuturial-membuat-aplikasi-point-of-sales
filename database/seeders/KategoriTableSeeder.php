@@ -14,7 +14,7 @@ class KategoriTableSeeder extends Seeder
      */
     public function run()
     {
-        $kategori = [
+        $kategoris = [
             [
                 'nama_kategori'=>'sepatu'
             ],
@@ -22,6 +22,11 @@ class KategoriTableSeeder extends Seeder
                 'nama_kategori'=>'baju'
             ],
         ];
-        Kategori::insert($kategori);
+
+        array_map(function (array $kategori) {
+            Kategori::query()->updateOrCreate(
+                $kategori
+            );
+        }, $kategoris);
     }
 }

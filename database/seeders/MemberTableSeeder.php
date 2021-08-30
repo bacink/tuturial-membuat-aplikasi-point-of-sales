@@ -15,7 +15,7 @@ class MemberTableSeeder extends Seeder
     public function run()
     {
 
-        $member = [
+        $members = [
             [
                 'kode_member'=> tambah_nol_didepan(1, 5),
                 'nama'=>'Egi ariska',
@@ -30,6 +30,12 @@ class MemberTableSeeder extends Seeder
                 'telepon'=>'087879012438',
             ],
         ];
-        Member::insert($member);
+
+
+        array_map(function (array $member) {
+            Member::query()->updateOrCreate(
+                $member
+            );
+        }, $members);
     }
 }

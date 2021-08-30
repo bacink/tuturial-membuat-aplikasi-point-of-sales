@@ -76,6 +76,8 @@
                 {data: 'subtotal'},
             ]
         })
+
+        
     });
 
     function addForm() {
@@ -104,5 +106,7 @@
                 });
         }
     }
+
+   
 </script>
 @endpush
