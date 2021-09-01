@@ -3,7 +3,6 @@
         <form action="" method="post" class="form-horizontal">
             @csrf
             @method('post')
-
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span

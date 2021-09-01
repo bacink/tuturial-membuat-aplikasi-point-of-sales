@@ -46,7 +46,7 @@ class NewTransaksiController extends Controller
 
     public function detail($id)
     {
-        $produk = Produk::get();
+        $produk = Produk::with('stock')->get();
         $penjualan = Penjualan::latest()->first();
         $member = Member::find($id);
         return view('new.transaksi.detail', compact('member', 'produk', 'penjualan'));

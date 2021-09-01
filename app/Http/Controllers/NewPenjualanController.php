@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Pembayaran;
 use App\Models\Penjualan;
 use App\Models\PenjualanDetail;
+use App\Models\Stock;
+use App\Models\Traits\StockRiwayat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class NewPenjualanController extends Controller
 {
+    use StockRiwayat;
+
     public function store(Request $request)
     {
 
@@ -17,15 +21,18 @@ class NewPenjualanController extends Controller
         try {
 
             // Step 1 : Search data
-            $data = PenjualanDetail::whereIdPenjualan($request->id_penjualan)->get();
-            $total_item = $data->sum('jumlah');
+            $penjualanDetail = PenjualanDetail::whereIdPenjualan($request->id_penjualan)->get();
+            
+            // Step 2 : Update stock
+            
+            $total_item = $penjualanDetail->sum('jumlah');
             $data = Penjualan::find($request->id_penjualan);
             $data->total_tagihan = customAngka($request->total_tagihan);
             $data->total_item = $total_item;
 
             $data->save();
 
-            // Step 2 : Update data
+            // Step 3 : Update data
             $pembayaran = new Pembayaran();
             $pembayaran->id_penjualan = $request->id_penjualan;
             $pembayaran->piutang = customAngka($request->total_tagihan);
@@ -34,10 +41,30 @@ class NewPenjualanController extends Controller
             $pembayaran->save();
 
             DB::commit();
-            return redirect()->route('new.transaksi.transaksi.index')->with($request->session()->flash('status', 'Pembayaran berhasil disimpan!'));
+            $this->updateStock($request,$penjualanDetail);
+            // return redirect()->route('new.transaksi.transaksi.index')->with($request->session()->flash('status', 'Pembayaran berhasil disimpan!'));
+        
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json($e, 500);
         }
+    }
+
+    public function updateStock(Request $request,$data)
+    {
+        DB::transaction(function () use ($request,$data){
+            foreach($data as $row){
+                $stock = Stock::whereIdProduk($row->id_produk)->first();
+                $newQtyStock = ($stock->qty) - ($row->jumlah);
+                
+                $deskripsi = 'Pengurangan Stock dari Transaksi Penjualan dari : '.$stock->qty. 'menjadi '.$newQtyStock;
+                
+                $this->catatRiwayat($stock->id_stock,$row->jumlah,$deskripsi);
+                $stock->qty = $newQtyStock;
+                $stock->update();
+            }    
+            return redirect()->route('new.transaksi.transaksi.index')->with($request->session()->flash('status', 'Pembayaran berhasil disimpan!'));
+        });
+        
     }
 }

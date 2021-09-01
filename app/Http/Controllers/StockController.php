@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\StockResource;
 use App\Models\Stock;
+use App\Models\Traits\StockRiwayat;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StockController extends Controller
 {
+    use StockRiwayat;
     /**
      * Display the specified resource.
      *
@@ -15,8 +19,22 @@ class StockController extends Controller
      */
     public function show($id)
     {
-        $stock = Stock::whereIdProduk($id)->first();
+        $stock = Stock::find($id);
         $stock = new StockResource($stock);
         return response()->json($stock);
+    }
+
+    public function update(Request $request, $id)
+    {
+       
+        $stock = Stock::find($id);
+       
+        DB::transaction(function () use ($request,$stock,$id) {
+            $oldqty = $request->oldqty;
+            $stock->qty=$request->qty;
+            $stock->update();
+            $deskripsi = 'Stock diubah dari data produk stock awal '.$oldqty.' menjadi '.$request->qty;
+            $this->catatRiwayat($id,$request->qty,$deskripsi);
+        });
     }
 }

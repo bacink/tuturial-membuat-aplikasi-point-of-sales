@@ -1,8 +1,6 @@
 <div class="modal fade" id="modal-form-update" tabindex="-1" role="dialog" aria-labelledby="modal-form-update">
     <div class="modal-dialog modal-lg" role="document">
-        <form action="" method="post" class="form-horizontal" id="formUpdateStock">
-            @csrf
-            @method('post')
+        <form action="" method="post" class="form-horizontal">
 
             <div class="modal-content">
                 <div class="modal-header">
@@ -34,6 +32,13 @@
                     </div>
                     <div class="form-group row">
                         <label for="qty" class="col-lg-2 col-lg-offset-1 control-label">Stock</label>
+                        <div class="col-lg-6">
+                            <input type="number" name="oldqty" id="oldqty" class="form-control" readonly>
+                            <span class="help-block with-errors"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="qty" class="col-lg-2 col-lg-offset-1 control-label">New Stock</label>
                         <div class="col-lg-6">
                             <input type="number" name="qty" id="qty" class="form-control" required>
                             <span class="help-block with-errors"></span>

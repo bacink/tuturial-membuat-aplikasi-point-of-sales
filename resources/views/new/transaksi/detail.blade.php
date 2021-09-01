@@ -196,8 +196,6 @@ Detail Transaksi
 
                 $("#nama_produk").val(produk.nama_produk)
                 $("#harga_jual").val(harga_jual).focus()
-
-
             }
         });
     }

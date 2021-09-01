@@ -18,7 +18,7 @@ class StockResource extends JsonResource
             'id_stock'=>$this->id_stock,
             'id_produk'=>$this->id_produk,
             'qty'=>$this->qty,
-            'produk'=>$this->produk,
+            'produk'=>new ProdukResource($this->produk),
         ];
     }
 }

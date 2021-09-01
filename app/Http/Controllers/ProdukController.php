@@ -8,6 +8,7 @@ use App\Models\Kategori;
 use App\Models\PembelianDetail;
 use Illuminate\Http\Request;
 use App\Models\Produk;
+use App\Models\Stock;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use PDF;
@@ -85,12 +86,21 @@ class ProdukController extends Controller
                 }
             })
             ->addColumn('aksi', function ($produk) {
+                if($produk->stock == null){
+                    $id_stock = 0;
+                    $btn_riwayat ='';
+                    $btn_stock='<a href="' . route('pembelian.index') . '" class="btn btn-xs btn-success btn-flat">Tambah Stock</a>';
+                }else{
+                    $id_stock = $produk->stock->id_stock;
+                    $btn_riwayat = '<button type="button" onclick="showDetail(`' . route('stock.riwayat.detail.data', $id_stock) . '`)" class="btn btn-xs btn-warning btn-flat">Riwayat Stock</button>';
+                    $btn_stock = '<button type="button" onclick="updateForm(`' . route('stock.update', $id_stock) . '`)" class="btn btn-xs btn-success btn-flat">Update Stock</button>';
+                }
                 return '
                 <div class="btn-group">
                     <button type="button" onclick="editForm(`' . route('produk.update', $produk->id_produk) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                    '.$btn_stock.'
                     <button type="button" onclick="deleteData(`' . route('produk.destroy', $produk->id_produk) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
-                    <button type="button" onclick="updateForm(`' . route('produk.update', $produk->id_produk) . '`)" class="btn btn-xs btn-success btn-flat">Update Stock</button>
-                    <button type="button" class="btn btn-xs btn-warning btn-flat">Riwayat Stock</button>
+                    '.$btn_riwayat.'
                 </div>
                 ';
             })
@@ -148,6 +158,7 @@ class ProdukController extends Controller
      */
     public function show($id)
     {
+        
         $produk = Produk::find($id);
         $produk= new ProdukResource($produk);
         return response()->json($produk);

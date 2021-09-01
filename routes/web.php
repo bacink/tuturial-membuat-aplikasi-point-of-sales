@@ -17,6 +17,7 @@ use App\Http\Controllers\{
     PiutangController,
     SettingController,
     StockController,
+    StockRiwayatController,
     SupplierController,
     UserController,
 };
@@ -147,6 +148,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/piutang/bayar/{piutang}', [PiutangController::class, 'bayar'])->name('piutang.bayar');
         Route::get('/piutang/data/', [PiutangController::class, 'data'])->name('piutang.data');
         Route::resource('/piutang', PiutangController::class);
+
+        Route::resource('/stock/riwayat', StockRiwayatController::class);
+        Route::get('/stock/riwayat/data/{riwayat}', [StockRiwayatController::class, 'detailData'])->name('stock.riwayat.detail.data');
 
         Route::resource('/stock', StockController::class);
 

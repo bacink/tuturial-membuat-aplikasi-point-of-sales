@@ -22,16 +22,33 @@
                             <td><span class="label label-success">{{ $item->kode_produk }}</span></td>
                             <td>{{ $item->nama_produk }}</td>
                             <td>{{ $item->harga_beli }}</td>
-                            <td>{{ $item->stok }}</td>
                             <td>
-                                @if ($item->stok === 0)
-
+                               @if($item->stock !== null)
+                                    {{ $item->stock->qty }}
+                               @else
+                                {{0}}
+                               @endif
+                                </td>
+                            <td>
+                                @if($item->stock !== null)
+                                    @if($item->stock->qty <= 0)
+                                        <button href="#" class="btn btn-warning btn-xs btn-flat" disabled>
+                                        <i class="fa fa-times"></i>
+                                            Pilih
+                                        </button>
+                                        @else
+                                        <a href="#" class="btn btn-primary btn-xs btn-flat" onclick="pilihProduk('{{ $item->id_produk }}', '{{ $item->kode_produk }}')">
+                                            <i class="fa fa-check-circle"></i>
+                                            Pilih
+                                        </a>
+                                    @endif
                                 @else
-                                <a href="#" class="btn btn-primary btn-xs btn-flat" onclick="pilihProduk('{{ $item->id_produk }}', '{{ $item->kode_produk }}')">
-                                    <i class="fa fa-check-circle"></i>
+                                <button href="#" class="btn btn-warning btn-xs btn-flat" disabled>
+                                    <i class="fa fa-times"></i>
                                     Pilih
-                                </a>
+                                </button>
                                 @endif
+                                
 
 
                             </td>

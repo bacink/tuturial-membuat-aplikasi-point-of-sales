@@ -23,13 +23,12 @@
             <div class="box-body table-responsive">
                 <form action="" method="post" class="form-produk">
                     @csrf
-                    <table class="table table-stiped table-bordered">
+                    <table id="table_produk" class="table table-stiped table-bordered">
                         <thead>
                             <th width="5%">
                                 <input type="checkbox" name="select_all" id="select_all">
                             </th>
                             <th width="5%">No</th>
-                            <th>Dibuat</th>
                             <th>Kode</th>
                             <th>Nama</th>
                             <th>Kategori</th>
@@ -48,15 +47,16 @@
 
 @includeIf('produk.form')
 @includeIf('produk.update_stock')
+@includeIf('produk.riwayat_stock')
 @endsection
 
 @push('scripts')
 <script>
-    let table;
+    let table, table1;
 
     $(function () {
 
-        table = $('.table').DataTable({
+        table = $('#table_produk').DataTable({
             processing: true,
             autoWidth: false,
             ajax: {
@@ -64,7 +64,6 @@
             },
             columns: [
                 {data: 'select_all', searchable: false, sortable: false},
-                {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'kode_produk'},
                 {data: 'nama_produk'},
@@ -76,6 +75,41 @@
                 {data: 'aksi', searchable: false, sortable: false},
             ]
         });
+
+        table1 = $('#riwayat').DataTable({
+            processing: true,
+            bSort: false,
+            dom: 'Brt',
+            columns: [
+                {
+                    data: 'DT_RowIndex',
+                    searchable: false,
+                    sortable: false
+                },
+                {
+                    data: 'kode_produk'
+                },
+                {
+                    data: 'produk'
+                },
+                {
+                    data: 'kategori'
+                },
+                {
+                    data: 'merk'
+                },
+                {
+                    data: 'qty'
+                },
+                {
+                    data: 'deskripsi'
+                },
+                {
+                    data: 'tanggal'
+                },
+            
+            ]
+        })
 
         $('#modal-form').validator().on('submit', function (e) {
             if (! e.preventDefault()) {
@@ -96,6 +130,14 @@
         });
     });
 
+    function showDetail(url) {
+        
+        $('#modal-detail').modal('show');
+        
+        table1.ajax.url(url);
+        table1.ajax.reload();
+    }
+
     function addForm(url) {
         $('#modal-form').modal('show');
         $('#modal-form .modal-title').text('Tambah Produk');
@@ -106,36 +148,16 @@
         $('#modal-form [name=nama_produk]').focus();
     }
 
-    function updateForm(url){
-        
-        $('#modal-form-update').modal('show');
-        $('#modal-form-update .modal-title').text('Edit Stock');
-
-        $('#modal-form-update form')[0].reset();
-        $('#modal-form-update form').attr('action', url);
-        $('#modal-form-update [name=_method]').val('put');
-        $('#modal-form-update [name=qty]').focus();
-
-        $.get(url)
-            .done((response) => {
-                (response.stock !=null) ? qty = response.stock.qty : qty=0;
-
-                $('#modal-form-update [name=merk]').val(response.merk);
-                $('#modal-form-update [name=nama_produk]').val(response.nama_produk);
-                $('#modal-form-update [name=kategori]').val(response.kategori.nama_kategori);
-                $('#modal-form-update [name=qty]').val(qty);
-            })
-            .fail((err) => {
-              
-            return;
-        });
-    }
-
-    $('#modal-form').validator().on('submit', function (e) {
+    $('#modal-form-update').validator().on('submit', function (e) {
             if (! e.preventDefault()) {
-                $.post($('#modal-form form').attr('action'), $('#modal-form form').serialize())
+                $.post($('#modal-form-update form').attr('action'),{
+                    '_token': $('[name=csrf-token]').attr('content'),
+                    '_method': 'put',
+                    oldqty:$('#modal-form-update [name=oldqty]').val(),
+                    qty:$('#modal-form-update [name=qty]').val(),
+                })
                     .done((response) => {
-                        $('#modal-form').modal('hide');
+                        $('#modal-form-update').modal('hide');
                         table.ajax.reload();
                     })
                     .fail((errors) => {
@@ -144,6 +166,26 @@
                     });
             }
         });
+
+    function updateForm(url){
+        
+        $('#modal-form-update').modal('show');
+        $('#modal-form-update .modal-title').text('Edit Stock');
+        $('#modal-form-update form')[0].reset();
+        $('#modal-form-update form').attr('action', url);
+        $('#modal-form-update [name=_method]').val('put');
+        $.get(url)
+            .done((response) => {
+                $('#modal-form-update [name=merk]').val(response.produk.merk);
+                $('#modal-form-update [name=nama_produk]').val(response.produk.nama_produk);
+                $('#modal-form-update [name=kategori]').val(response.produk.kategori.nama_kategori);
+                $('#modal-form-update [name=oldqty]').val(response.qty);
+            })
+            .fail((err) => {
+              
+            return;
+        });
+    }
 
     function editForm(url) {
         $('#modal-form').modal('show');
@@ -230,6 +272,7 @@
         }
     }
 
+    
 
 </script>
 @endpush
