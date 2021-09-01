@@ -20,6 +20,7 @@ class BuatProdukTable extends Migration
             $table->string('merk')->nullable();
             $table->integer('harga_jual');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -2,12 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class Produk extends Model
+class Produk extends BaseModel
 {
-    use HasFactory;
 
     protected $table = 'produk';
     protected $primaryKey = 'id_produk';
@@ -27,4 +23,10 @@ class Produk extends Model
     {
         return $this->hasOne(Stock::class,'id_produk','id_produk');
     }
+    
+    public function pembelianDetail()
+    {
+        return $this->hasMany(PembelianDetail::class,'id_produk','id_produk');
+    }
+
 }

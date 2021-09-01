@@ -21,7 +21,9 @@ class ProdukResource extends JsonResource
             'kode_produk'=>$this->kode_produk, 
             'nama_produk'=>$this->nama_produk, 
             'merk'=>$this->merk,  
+            'harga_beli'=>(($this->pembelianDetail)->isNotEmpty())? $this->pembelianDetail()->latest()->pluck('harga_beli')->first() : 0,
             'harga_jual'=>$this->harga_jual,
+            'stock'=>$this->stock,
         ];
     }
 }

@@ -1,10 +1,7 @@
 <?php
 
 namespace App\Models;
-
-use Illuminate\Database\Eloquent\Model;
-
-class HargaMember extends Model
+class HargaMember extends BaseModel
 {
     protected $table = 'harga_member';
     protected $primaryKey = 'id_harga_member';

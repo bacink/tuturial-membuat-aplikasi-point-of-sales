@@ -18,6 +18,7 @@ class BuatPengeluaranTable extends Migration
             $table->text('deskripsi');
             $table->integer('nominal');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

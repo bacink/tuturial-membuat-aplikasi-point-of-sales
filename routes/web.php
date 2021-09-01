@@ -16,10 +16,12 @@ use App\Http\Controllers\{
     PenjualanDetailController,
     PiutangController,
     SettingController,
+    StockController,
     SupplierController,
     UserController,
 };
 use App\Models\Produk;
+use App\Models\Stock;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -145,6 +147,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/piutang/bayar/{piutang}', [PiutangController::class, 'bayar'])->name('piutang.bayar');
         Route::get('/piutang/data/', [PiutangController::class, 'data'])->name('piutang.data');
         Route::resource('/piutang', PiutangController::class);
+
+        Route::resource('/stock', StockController::class);
 
     });
 });

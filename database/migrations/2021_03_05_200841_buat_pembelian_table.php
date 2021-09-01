@@ -19,6 +19,7 @@ class BuatPembelianTable extends Migration
             $table->integer('total_item');
             $table->integer('total_harga');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

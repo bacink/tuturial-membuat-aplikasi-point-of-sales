@@ -17,6 +17,7 @@ class BuatKategoriTable extends Migration
             $table->increments('id_kategori');
             $table->string('nama_kategori')->unique();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

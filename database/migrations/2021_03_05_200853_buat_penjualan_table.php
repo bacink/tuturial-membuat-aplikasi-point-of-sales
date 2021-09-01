@@ -20,6 +20,7 @@ class BuatPenjualanTable extends Migration
             $table->integer('total_tagihan');
             $table->integer('id_user');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

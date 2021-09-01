@@ -99,6 +99,7 @@
             prefix: 'Rp.',
             centsLimit: 0,
             thousandsSeparator: '.',
+            allowNegative: true
         })    
     });
 

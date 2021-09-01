@@ -16,10 +16,14 @@ class CreateHargaMemberTable extends Migration
     {
         Schema::create((new HargaMember())->getTable(), function (Blueprint $table) {
             $table->increments('id_harga_member');
-            $table->integer('id_member');
-            $table->integer('id_produk');
+            $table->unsignedInteger('id_member');
+            $table->unsignedInteger('id_produk');
             $table->integer('harga_jual');
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('id_member')->references('id_member')->on('member');
+            $table->foreign('id_produk')->references('id_produk')->on('produk');
         });
     }
 

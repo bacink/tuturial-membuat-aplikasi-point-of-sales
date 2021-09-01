@@ -36,7 +36,7 @@ class PembelianDetailController extends Controller
             $row = array();
             $row['kode_produk'] = '<span class="label label-success">'. $item->produk['kode_produk'] .'</span';
             $row['nama_produk'] = $item->produk['nama_produk'];
-            $row['harga_beli']  = '<input type="text" class="form-control price" value="Rp.'.format_uang($item->harga_beli).'">';
+            $row['harga_beli']  = '<input type="text" class="form-control price harga" data-id="'. $item->id_pembelian_detail .'" value="Rp.'.format_uang($item->harga_beli).'">';
             $row['jumlah']      = '<input type="number" class="form-control input-sm quantity" data-id="'. $item->id_pembelian_detail .'" value="'. $item->jumlah .'">';
             $row['subtotal']    = 'Rp. '. format_uang($item->subtotal);
             $row['aksi']        = '<div class="btn-group">
@@ -79,7 +79,7 @@ class PembelianDetailController extends Controller
             $detail->id_pembelian = $request->id_pembelian;
             $detail->id_produk = $produk->id_produk;
             $detail->harga_beli = 0;
-            $detail->jumlah = 1;
+            $detail->jumlah = 0;
             $detail->subtotal = 0;
             $detail->save();
     
@@ -111,6 +111,19 @@ class PembelianDetailController extends Controller
         $detail->delete();
 
         return response(null, 204);
+    }
+
+    public function loadForm($total)
+    {
+        $bayar =  $total;
+        $data  = [
+            'totalrp' => format_uang($total),
+            'bayar' => $bayar,
+            'bayarrp' => format_uang($bayar),
+            'terbilang' => ucwords(terbilang($bayar). ' Rupiah')
+        ];
+
+        return response()->json($data);
     }
 
 }

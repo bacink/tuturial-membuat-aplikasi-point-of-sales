@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             KategoriTableSeeder::class,
             ProdukTableSeeder::class,
             MemberTableSeeder::class,
+            SupplierSeeder::class,
         ]);
     }
 }

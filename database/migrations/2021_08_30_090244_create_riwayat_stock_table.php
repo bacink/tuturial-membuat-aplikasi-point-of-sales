@@ -18,6 +18,7 @@ class CreateRiwayatStockTable extends Migration
             $table->increments('id_riwayat_stock');
             $table->unsignedInteger('id_stock');
             $table->integer('qty');
+            $table->string('deskripsi');
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('id_stock')->references('id_stock')->on('stock');

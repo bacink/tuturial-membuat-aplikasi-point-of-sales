@@ -1,11 +1,10 @@
 <?php
 
-use App\Models\Pembayaran;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class PembayaranTable extends Migration
+class CreatePembayaranSupplierTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,15 +13,16 @@ class PembayaranTable extends Migration
      */
     public function up()
     {
-        Schema::create((new Pembayaran())->getTable(), function (Blueprint $table) {
-            $table->increments('id_pembayaran');
-            $table->unsignedInteger('id_penjualan');
+        Schema::create('pembayaran_supplier', function (Blueprint $table) {
+            $table->increments('id_pembayaran_supplier');
+            $table->unsignedInteger('id_pembelian');
             $table->integer('piutang');
             $table->integer('bayar');
             $table->integer('sisa');
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('id_penjualan')->references('id_penjualan')->on('penjualan');
+            
+            $table->foreign('id_pembelian')->references('id_pembelian')->on('pembelian');
         });
     }
 
@@ -33,6 +33,6 @@ class PembayaranTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists((new Pembayaran())->getTable());
+        Schema::dropIfExists('pembayaran_supplier');
     }
 }

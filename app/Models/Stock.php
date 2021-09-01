@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Stock extends Model
+class Stock extends BaseModel
 {
     protected $table = 'stock';
     protected $primaryKey = 'id_stock';

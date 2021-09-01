@@ -6,7 +6,7 @@
 
 @section('breadcrumb')
     @parent
-    <li class="active">Daftar Produk</li>
+    <li class="active">Data Produk</li>
 @endsection
 
 @section('content')
@@ -47,6 +47,7 @@
 </div>
 
 @includeIf('produk.form')
+@includeIf('produk.update_stock')
 @endsection
 
 @push('scripts')
@@ -67,7 +68,7 @@
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'kode_produk'},
                 {data: 'nama_produk'},
-                {data: 'nama_kategori'},
+                {data: 'kategori'},
                 {data: 'merk'},
                 {data: 'harga_beli'},
                 {data: 'harga_jual'},
@@ -105,10 +106,48 @@
         $('#modal-form [name=nama_produk]').focus();
     }
 
+    function updateForm(url){
+        
+        $('#modal-form-update').modal('show');
+        $('#modal-form-update .modal-title').text('Edit Stock');
+
+        $('#modal-form-update form')[0].reset();
+        $('#modal-form-update form').attr('action', url);
+        $('#modal-form-update [name=_method]').val('put');
+        $('#modal-form-update [name=qty]').focus();
+
+        $.get(url)
+            .done((response) => {
+                (response.stock !=null) ? qty = response.stock.qty : qty=0;
+
+                $('#modal-form-update [name=merk]').val(response.merk);
+                $('#modal-form-update [name=nama_produk]').val(response.nama_produk);
+                $('#modal-form-update [name=kategori]').val(response.kategori.nama_kategori);
+                $('#modal-form-update [name=qty]').val(qty);
+            })
+            .fail((err) => {
+              
+            return;
+        });
+    }
+
+    $('#modal-form').validator().on('submit', function (e) {
+            if (! e.preventDefault()) {
+                $.post($('#modal-form form').attr('action'), $('#modal-form form').serialize())
+                    .done((response) => {
+                        $('#modal-form').modal('hide');
+                        table.ajax.reload();
+                    })
+                    .fail((errors) => {
+                        alert('Tidak dapat menyimpan data');
+                        return;
+                    });
+            }
+        });
+
     function editForm(url) {
         $('#modal-form').modal('show');
         $('#modal-form .modal-title').text('Edit Produk');
-
         $('#modal-form form')[0].reset();
         $('#modal-form form').attr('action', url);
         $('#modal-form [name=_method]').val('put');
@@ -124,8 +163,8 @@
             })
             .fail((err) => {
                 alert(err.response);
-                return;
-            });
+            return;
+        });
     }
 
     $('#formProduk').submit(function(event) {

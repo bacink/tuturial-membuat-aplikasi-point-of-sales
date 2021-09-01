@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProdukResource;
 use App\Models\HargaMember;
 use App\Models\Kategori;
+use App\Models\PembelianDetail;
 use Illuminate\Http\Request;
 use App\Models\Produk;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use PDF;
 
@@ -40,13 +43,9 @@ class ProdukController extends Controller
 
     public function data()
     {
-        $produk = Produk::leftJoin(
-            'kategori', 'kategori.id_kategori', 'produk.id_kategori'
-            )
-            ->select('produk.*', 'nama_kategori')
-            ->orderBy('kode_produk', 'asc')
-            ->get();
 
+        $produk = Produk::with('stock','kategori')->get();
+        
         return datatables()
             ->of($produk)
             ->addIndexColumn()
@@ -58,22 +57,40 @@ class ProdukController extends Controller
             ->addColumn('kode_produk', function ($produk) {
                 return '<span class="label label-success">' . $produk->kode_produk . '</span>';
             })
+            ->addColumn('kategori', function ($produk) {
+                if ($produk->kategori) {
+                    return $produk->kategori->nama_kategori;
+                 }else{
+                     return 0;
+                 }
+            })
             ->addColumn('harga_beli', function ($produk) {
-                return format_uang($produk->harga_beli);
+                $id_produk = $produk->id_produk;
+                $harga = PembelianDetail::whereIdProduk($id_produk)->latest()->first();
+                if($harga){
+                    return format_uang($harga->harga_beli);
+                }
+                else{
+                    return format_uang(0);
+                }
             })
             ->addColumn('harga_jual', function ($produk) {
                 return format_uang($produk->harga_jual);
             })
             ->addColumn('stok', function ($produk) {
-                return format_uang($produk->stok);
+                if ($produk->stock) {
+                   return $produk->stock->qty;
+                }else{
+                    return 0;
+                }
             })
             ->addColumn('aksi', function ($produk) {
                 return '
                 <div class="btn-group">
                     <button type="button" onclick="editForm(`' . route('produk.update', $produk->id_produk) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
                     <button type="button" onclick="deleteData(`' . route('produk.destroy', $produk->id_produk) . '`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
-                    <button type="button" class="btn btn-xs btn-success btn-flat">Update Stock</button>
-                    <button type="button" class="btn btn-xs btn-secondary btn-flat">Riwayat Stock</button>
+                    <button type="button" onclick="updateForm(`' . route('produk.update', $produk->id_produk) . '`)" class="btn btn-xs btn-success btn-flat">Update Stock</button>
+                    <button type="button" class="btn btn-xs btn-warning btn-flat">Riwayat Stock</button>
                 </div>
                 ';
             })
@@ -107,8 +124,8 @@ class ProdukController extends Controller
         ]);
 
         $kode_produk = 'P' . tambah_nol_didepan((int)$kode->id_produk + 1, 6);
-
         $harga_beli = customAngka($request->harga_beli);
+
         $harga_jual = customAngka($request->harga_jual);
 
         if ($harga_jual <= $harga_beli) {
@@ -132,7 +149,7 @@ class ProdukController extends Controller
     public function show($id)
     {
         $produk = Produk::find($id);
-
+        $produk= new ProdukResource($produk);
         return response()->json($produk);
     }
 
@@ -161,7 +178,6 @@ class ProdukController extends Controller
         $harga_beli = customAngka($request->harga_beli);
         $harga_jual = customAngka($request->harga_jual);
 
-        $request['harga_beli'] = $harga_beli;
         $request['harga_jual'] = $harga_jual;
 
 
@@ -169,7 +185,11 @@ class ProdukController extends Controller
             return response()->json('Data gagal disimpan', 400);
         }
 
-        $produk->update($request->all());
+        $produk->nama_produk = $request->nama_produk;
+        $produk->merk = $request->merk;
+        $produk->id_kategori = $request->id_kategori;
+        $produk->harga_jual = $request->harga_jual;
+        $produk->update();
 
         return response()->json('Data berhasil disimpan', 200);
     }

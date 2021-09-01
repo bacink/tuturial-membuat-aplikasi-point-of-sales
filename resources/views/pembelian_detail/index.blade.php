@@ -110,7 +110,13 @@
                             <div class="form-group row">
                                 <label for="bayar" class="col-lg-2 control-label">Bayar</label>
                                 <div class="col-lg-8">
-                                    <input type="text" id="bayarrp" class="form-control">
+                                    <input type="text" id="bayarrp" class="form-control price">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="sisa" class="col-lg-2 control-label">Sisa</label>
+                                <div class="col-lg-8">
+                                    <input type="text" id="sisa" name="sisa" class="form-control price" readonly>
                                 </div>
                             </div>
                         </form>
@@ -160,27 +166,20 @@
                 prefix: 'Rp.',
                 centsLimit: 0,
                 thousandsSeparator: '.',
+                allowNegative: true
             })  
         });
 
         table2 = $('.table-produk').DataTable();
 
-        $(document).on('input', '.quantity', function () {
-            
-            let id = $(this).data('id');
-            
-            let harga_beli = $(this).closest('tr').children('td.harga_beli').find("input").unmask()
-            
-            let jumlah = parseInt($(this).val());
+        function hitung(id,harga_beli,jumlah){
             
             if (harga_beli < 1) {
-                alert('Harga Beli tidak boleh kosong');
                 return;
             }
-            
+
             if (jumlah < 1) {
                 $(this).val(1);
-                alert('Jumlah tidak boleh kurang dari 1');
                 return;
             }
 
@@ -191,20 +190,38 @@
             }
 
             $.post(`{{ url('/pembelian_detail') }}/${id}`, {
-                    '_token': $('[name=csrf-token]').attr('content'),
-                    '_method': 'put',
-                    'jumlah': jumlah,
-                    'harga_beli':harga_beli
-                })
-                .done(response => {
-                    table.ajax.reload();
-                    loadForm()
+                '_token': $('[name=csrf-token]').attr('content'),
+                '_method': 'put',
+                'jumlah': jumlah,
+                'harga_beli':harga_beli
+            })
+            .done(response => {
+                table.ajax.reload();
+                loadForm()
+            })
+            .fail(errors => {
+                alert('Tidak dapat menyimpan data');
+                return;
+            });
+        }
 
-                })
-                .fail(errors => {
-                    alert('Tidak dapat menyimpan data');
-                    return;
-                });
+        $(document).on('mouseleave blur mouseout', '.quantity', function () {
+            
+            let id = $(this).data('id');
+            let harga_beli = $(this).closest('tr').children('td.harga_beli').find("input").unmask()
+            let jumlah = parseInt($(this).val());
+
+            hitung(id,harga_beli,jumlah)
+                
+        });
+
+        $(document).on('mouseleave blur mouseout', '.harga', function () {
+            
+            let id = $(this).data('id');
+            let harga_beli = parseInt($(this).unmask());
+            let jumlah = $(this).closest('tr').find('td:eq(4)').find("input").val();
+            hitung(id,harga_beli,jumlah)
+                
         });
 
   
@@ -269,6 +286,7 @@
                 $('#totalrp').val('Rp. '+ response.totalrp);
                 $('#bayarrp').val('Rp. '+ response.bayarrp);
                 $('#bayar').val(response.bayar);
+                $('#sisa').val('Rp. 0');
                 $('.tampil-bayar').text('Rp. '+ response.bayarrp);
                 $('.tampil-terbilang').text(response.terbilang);
             })
@@ -277,5 +295,20 @@
                 return;
             })
     }
+    
+
+    $("#bayarrp").on('input', function () {
+        bayar = $(this).unmask()
+        total = $("#totalrp").unmask()
+
+        sisa = parseInt(total) - parseInt(bayar)
+        $("#sisa").val(sisa)
+        $(".price").priceFormat({
+                prefix: 'Rp.',
+                centsLimit: 0,
+                thousandsSeparator: '.',
+                allowNegative: true
+            }) 
+    });
 </script>
 @endpush

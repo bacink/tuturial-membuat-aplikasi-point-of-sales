@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PembayaranSupplier;
 use Illuminate\Http\Request;
 use App\Models\Pembelian;
 use App\Models\PembelianDetail;
 use App\Models\Produk;
+use App\Models\Stock;
 use App\Models\Supplier;
+use App\Models\Traits\StockRiwayat;
+use Illuminate\Support\Facades\DB;
 
 class PembelianController extends Controller
 {
+    use StockRiwayat;
+
     public function index()
     {
         $supplier = Supplier::orderBy('nama')->get();
@@ -69,17 +75,45 @@ class PembelianController extends Controller
     public function store(Request $request)
     {
         $pembelian = Pembelian::findOrFail($request->id_pembelian);
-        $pembelian->total_item = $request->total_item;
-        $pembelian->total_harga = $request->total;
-        $pembelian->bayar = $request->bayar;
-        $pembelian->update();
 
-        $detail = PembelianDetail::where('id_pembelian', $pembelian->id_pembelian)->get();
-        foreach ($detail as $item) {
-            $produk = Produk::find($item->id_produk);
-            $produk->stok += $item->jumlah;
-            $produk->update();
-        }
+        DB::transaction(function () use ($request,$pembelian) {
+            $pembelian->total_item = $request->total_item;
+            $pembelian->total_harga = $request->total;  
+            $pembelian->update();
+
+            $pembayaran = new PembayaranSupplier();
+            $pembayaran->id_pembelian = $request->id_pembelian;
+            $pembayaran->piutang = $request->total;
+            $pembayaran->bayar = $request->bayar;
+            $pembayaran->sisa = customAngka($request->sisa);
+            $pembayaran->save();
+
+            $detail = PembelianDetail::where('id_pembelian', $pembelian->id_pembelian)->get();
+        
+            foreach ($detail as $item) {
+                
+                $cekStock = Stock::whereIdProduk($item->id_produk)->first();
+
+                if($cekStock){
+                    $cekStock->qty = $cekStock->qty + $item->jumlah;
+                    $cekStock->update();
+
+                    $deskripsi = 'Diperoleh dari Belanja';
+                    $this->catatRiwayat($cekStock->id_stock,$item->jumlah,$deskripsi);
+                    
+                }else{
+                    $stock = new Stock();
+                    $stock->id_produk = 
+                    $stock->qty = $item->jumlah;
+                    $stock->save();
+                    $deskripsi = 'Diperoleh dari Belanja';
+                    
+                    $this->catatRiwayat($stock->id_stock,$item->jumlah,$deskripsi);
+                    
+                }
+
+            }
+        }); 
 
         return redirect()->route('pembelian.index');
     }

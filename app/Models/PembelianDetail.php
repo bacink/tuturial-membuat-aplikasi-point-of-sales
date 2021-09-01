@@ -2,12 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class PembelianDetail extends Model
+class PembelianDetail extends BaseModel
 {
-    use HasFactory;
 
     protected $table = 'pembelian_detail';
     protected $primaryKey = 'id_pembelian_detail';
@@ -15,6 +11,6 @@ class PembelianDetail extends Model
 
     public function produk()
     {
-        return $this->hasOne(Produk::class, 'id_produk', 'id_produk');
+        return $this->belongsTo(Produk::class, 'id_produk', 'id_produk');
     }
 }
