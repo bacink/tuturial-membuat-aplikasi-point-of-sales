@@ -73,6 +73,53 @@
     </div>
     <!-- ./col -->
 </div>
+<div class="row">
+    <div class="col-lg-4 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-green">
+            <div class="inner">
+                <h3>{{ $supplier }}</h3>
+
+                <p>Total Pembayaran</p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-money"></i>
+            </div>
+            <a href="{{ route('new.transaksi.transaksi.index') }}" class="small-box-footer">Lihat <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->    
+    <div class="col-lg-4 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-orange">
+            <div class="inner">
+                <h3>{{ $supplier }}</h3>
+
+                <p>Total Pengeluaran</p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-money"></i>
+            </div>
+            <a href="{{ route('pengeluaran.index') }}" class="small-box-footer">Lihat <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->    
+    <div class="col-lg-4 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-blue">
+            <div class="inner">
+                <h3>{{ $supplier }}</h3>
+
+                <p>Uang di Kasir</p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-money"></i>
+            </div>
+            <a href="{{ route('piutang.index') }}" class="small-box-footer">Lihat <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col --> 
+</div>
 <!-- /.row -->
 <!-- Main row -->
 <div class="row">

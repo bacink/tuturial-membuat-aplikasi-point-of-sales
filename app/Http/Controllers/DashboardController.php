@@ -41,7 +41,7 @@ class DashboardController extends Controller
             $data_penjualan[] += $total_penjualan;
             $data_pembelian[] += $total_pembelian;
             $data_pengeluaran[] += $total_pengeluaran;
-            
+
             $tanggal_awal = date('Y-m-d', strtotime("+1 day", strtotime($tanggal_awal)));
         }
   

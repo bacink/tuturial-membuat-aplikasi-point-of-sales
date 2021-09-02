@@ -17,6 +17,10 @@ Daftar Piutang
                 <table class="table table-stiped table-bordered table-penjualan">
                     <thead>
                         <th width="5%">No</th>
+                        <th>Kode Member</th>
+                        <th>Nama</th>
+                        <th>Alamat</th>
+                        <th>Telepon</th>
                         <th>Tanggal</th>
                         <th>Total Tagihan</th>
                         <th>Total Bayar</th>
@@ -50,6 +54,18 @@ Daftar Piutang
                     data: 'DT_RowIndex',
                     searchable: false,
                     sortable: false
+                },
+                {
+                    data: 'kode_member'
+                },
+                {
+                    data: 'nama'
+                },
+                {
+                    data: 'alamat'
+                },
+                {
+                    data: 'telepon'
                 },
                 {
                     data: 'tanggal'

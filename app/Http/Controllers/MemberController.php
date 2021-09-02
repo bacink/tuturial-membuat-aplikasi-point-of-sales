@@ -48,8 +48,9 @@ class MemberController extends Controller
 
     public function selection()
     {
+        
         $member = Member::orderBy('kode_member')->get();
-
+       
         return datatables()
             ->of($member)
             ->addIndexColumn()

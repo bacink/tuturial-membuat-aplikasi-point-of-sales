@@ -26,9 +26,10 @@
                     <thead>
                         <th width="5%">No</th>
                         <th>Tanggal</th>
-                        <th>Penjualan</th>
-                        <th>Pembelian</th>
-                        <th>Pengeluaran</th>
+                        <th>Penjualan Penjualan Produk</th>
+                        <th>Total Pembayaran dari konsumen</th>
+                        <th>Total Belanja</th>
+                        <th>Total Pengeluaran</th>
                         <th>Pendapatan</th>
                     </thead>
                 </table>
@@ -56,6 +57,7 @@
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'tanggal'},
                 {data: 'penjualan'},
+                {data: 'pembayaran'},
                 {data: 'pembelian'},
                 {data: 'pengeluaran'},
                 {data: 'pendapatan'}

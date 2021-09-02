@@ -25,6 +25,18 @@ class PiutangController extends Controller
         return datatables()
             ->of($penjualan)
             ->addIndexColumn()
+            ->addColumn('kode_member', function ($penjualan) {
+                return $penjualan->member->kode_member;
+            })
+            ->addColumn('nama', function ($penjualan) {
+                return $penjualan->member->nama;
+            })
+            ->addColumn('alamat', function ($penjualan) {
+                return $penjualan->member->alamat;
+            })
+            ->addColumn('telepon', function ($penjualan) {
+                return $penjualan->member->telepon;
+            })
             ->addColumn('tanggal', function ($penjualan) {
                 return tanggal_indonesia($penjualan->created_at, false);
             })
