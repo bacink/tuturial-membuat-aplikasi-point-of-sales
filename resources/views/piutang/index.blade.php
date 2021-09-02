@@ -147,5 +147,19 @@ Daftar Piutang
         sisa = parseInt(piutang) - parseInt(bayar)
         $('#modal-form [name=sisa]').val(sisa)
     })
+
+    $('#modal-form').validator().on('submit', function (e) {
+            if (! e.preventDefault()) {
+                $.post($('#modal-form form').attr('action'), $('#modal-form form').serialize())
+                    .done((response) => {
+                        $('#modal-form').modal('hide');
+                        table.ajax.reload();
+                    })
+                    .fail((errors) => {
+                        alert('Tidak dapat menyimpan data');
+                        return;
+                    });
+            }
+        });
 </script>
 @endpush

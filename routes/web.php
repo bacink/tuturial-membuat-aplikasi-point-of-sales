@@ -145,7 +145,7 @@ Route::group(['middleware' => 'auth'], function () {
         });
 
         Route::get('/piutang/bayar/{piutang}', [PiutangController::class, 'showBayar'])->name('piutang.bayar.show');
-        Route::post('/piutang/bayar/{piutang}', [PiutangController::class, 'bayar'])->name('piutang.bayar');
+        Route::put('/piutang/bayar/{piutang}', [PiutangController::class, 'bayar'])->name('piutang.bayar');
         Route::get('/piutang/data/', [PiutangController::class, 'data'])->name('piutang.data');
         Route::resource('/piutang', PiutangController::class);
 

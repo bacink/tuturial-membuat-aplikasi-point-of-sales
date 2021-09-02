@@ -47,7 +47,7 @@ class PiutangController extends Controller
                 return '
                 <div class="btn-group">
                     <button onclick="showDetail(`' . route('piutang.show', $penjualan->id_penjualan) . '`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-eye"></i></button>
-                    <button onclick="showBayar(`' . route('piutang.bayar.show', $penjualan->id_penjualan) . '`)" class="btn btn-xs btn-warning btn-flat"><i class="fa fa-cash"></i></button>
+                    <button onclick="showBayar(`' . route('piutang.bayar.show', $penjualan->id_penjualan) . '`)" class="btn btn-xs btn-warning btn-flat"><i class="fa fa-money"></i></button>
                 </div>
                 ';
             })
@@ -76,9 +76,9 @@ class PiutangController extends Controller
         $bayar = customAngka($request->bayar);
         $sisa = customAngka($request->sisa);
         $pembayaran->id_penjualan = $id;
-        $pembayaran->piutang = $sisa;
+        $pembayaran->piutang = $piutang;
         $pembayaran->bayar = $bayar;
-        $pembayaran->sisa = $sisa - $bayar;
+        $pembayaran->sisa = $sisa;
         $pembayaran->save();
 
         return response()->json('Data berhasil disimpan', 200);
