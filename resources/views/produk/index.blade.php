@@ -99,6 +99,9 @@
                     data: 'merk'
                 },
                 {
+                    data: 'old_stock'
+                },
+                {
                     data: 'qty'
                 },
                 {

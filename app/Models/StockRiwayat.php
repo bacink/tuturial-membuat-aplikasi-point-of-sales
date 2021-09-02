@@ -11,16 +11,4 @@ class StockRiwayat extends BaseModel
     public function stock(){
         return $this->belongsTo(Stock::class,'id_stock','id_stock');
     }
-
-    public function getTanggalInsertAtAttribute()
-    {
-        return \Carbon\Carbon::parse($this->attributes['created_at'])
-        ->format('d, M Y H:i');
-    }
-
-    public function getTanggalUbahAtAttribute()
-    {
-        return \Carbon\Carbon::parse($this->attributes['updated_at'])
-        ->diffForHumans();
-    }
 }

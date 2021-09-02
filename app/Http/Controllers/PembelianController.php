@@ -33,11 +33,17 @@ class PembelianController extends Controller
             ->addColumn('total_item', function ($pembelian) {
                 return format_uang($pembelian->total_item);
             })
-            ->addColumn('total_harga', function ($pembelian) {
+            ->addColumn('total_belanja', function ($pembelian) {
                 return 'Rp. '. format_uang($pembelian->total_harga);
             })
             ->addColumn('bayar', function ($pembelian) {
-                return 'Rp. '. format_uang($pembelian->bayar);
+                return 'Rp. '. format_uang($pembelian->pembayaranSupplier->sum('bayar'));
+            })
+            ->addColumn('sisa', function ($pembelian) {
+                $total_belanja = $pembelian->total_harga;
+                $bayar = $pembelian->pembayaranSupplier->sum('bayar');
+                $sisa = $total_belanja - $bayar;
+                return 'Rp. '. format_uang($sisa);
             })
             ->addColumn('tanggal', function ($pembelian) {
                 return tanggal_indonesia($pembelian->created_at, false);
@@ -89,26 +95,26 @@ class PembelianController extends Controller
             $pembayaran->save();
 
             $detail = PembelianDetail::where('id_pembelian', $pembelian->id_pembelian)->get();
-        
+            
             foreach ($detail as $item) {
                 
                 $cekStock = Stock::whereIdProduk($item->id_produk)->first();
-
                 if($cekStock){
+                    
                     $cekStock->qty = $cekStock->qty + $item->jumlah;
                     $cekStock->update();
 
                     $deskripsi = 'Diperoleh dari Belanja';
-                    $this->catatRiwayat($cekStock->id_stock,$item->jumlah,$deskripsi);
+                    $this->catatRiwayat($cekStock->id_stock,$cekStock->qty,$item->jumlah,$deskripsi);
                     
                 }else{
                     $stock = new Stock();
-                    $stock->id_produk = 
+                    $stock->id_produk = $item->id_produk;
                     $stock->qty = $item->jumlah;
                     $stock->save();
-                    $deskripsi = 'Diperoleh dari Belanja';
+                    $deskripsi = '<span class="label label-success">+</span>';
                     
-                    $this->catatRiwayat($stock->id_stock,$item->jumlah,$deskripsi);
+                    $this->catatRiwayat($stock->id_stock,0,$item->jumlah,$deskripsi);
                     
                 }
 

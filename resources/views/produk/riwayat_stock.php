@@ -14,6 +14,7 @@
                         <th>Nama</th>
                         <th>Kategori</th>
                         <th>Merk</th>
+                        <th>Old Stock</th>
                         <th>Qty</th>
                         <th>Deskripsi</th>
                         <th>Tanggal</th>

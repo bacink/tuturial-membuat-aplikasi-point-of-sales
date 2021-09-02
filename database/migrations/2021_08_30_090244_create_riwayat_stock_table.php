@@ -17,6 +17,7 @@ class CreateRiwayatStockTable extends Migration
         Schema::create(((new StockRiwayat())->getTable()), function (Blueprint $table) {
             $table->increments('id_riwayat_stock');
             $table->unsignedInteger('id_stock');
+            $table->integer('old_stock');
             $table->integer('qty');
             $table->string('deskripsi');
             $table->timestamps();

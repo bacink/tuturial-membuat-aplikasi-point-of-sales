@@ -13,7 +13,7 @@ class Stock extends BaseModel
         return $this->belongsTo(Produk::class,'id_produk','id_produk');
     }
 
-    public function stok_riwayat(){
+    /* public function stok_riwayat(){
         return $this->hasMany(StockRiwayat::class,'id_stock','id_stock');
-    }
+    } */
 }

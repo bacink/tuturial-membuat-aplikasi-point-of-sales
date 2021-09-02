@@ -22,7 +22,8 @@ class NewPenjualanController extends Controller
 
             // Step 1 : Search data
             $penjualanDetail = PenjualanDetail::whereIdPenjualan($request->id_penjualan)->get();
-            
+            session(['id_penjualan' => $request->id_penjualan]);
+
             // Step 2 : Update stock
             
             $total_item = $penjualanDetail->sum('jumlah');
@@ -42,6 +43,9 @@ class NewPenjualanController extends Controller
 
             DB::commit();
             $this->updateStock($request,$penjualanDetail);
+            // return redirect('new/transaksi');
+            return redirect()->route('transaksi.selesai');
+
             // return redirect()->route('new.transaksi.transaksi.index')->with($request->session()->flash('status', 'Pembayaran berhasil disimpan!'));
         
         } catch (\Exception $e) {
@@ -52,18 +56,20 @@ class NewPenjualanController extends Controller
 
     public function updateStock(Request $request,$data)
     {
-        DB::transaction(function () use ($request,$data){
+        DB::transaction(function () use ($data,$request){
+            
             foreach($data as $row){
                 $stock = Stock::whereIdProduk($row->id_produk)->first();
                 $newQtyStock = ($stock->qty) - ($row->jumlah);
                 
-                $deskripsi = 'Pengurangan Stock dari Transaksi Penjualan dari : '.$stock->qty. 'menjadi '.$newQtyStock;
+                $deskripsi = '<span class="label label-danger">-</span>';
                 
-                $this->catatRiwayat($stock->id_stock,$row->jumlah,$deskripsi);
+                $this->catatRiwayat($stock->id_stock,$stock->qty,$row->jumlah,$deskripsi);
                 $stock->qty = $newQtyStock;
                 $stock->update();
             }    
-            return redirect()->route('new.transaksi.transaksi.index')->with($request->session()->flash('status', 'Pembayaran berhasil disimpan!'));
+        
+            
         });
         
     }

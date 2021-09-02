@@ -12,4 +12,9 @@ class Pembelian extends BaseModel
     {
         return $this->belongsTo(Supplier::class, 'id_supplier', 'id_supplier');
     }
+
+    public function pembayaranSupplier()
+    {
+        return $this->hasMany(PembayaranSupplier::class, 'id_pembelian', 'id_pembelian');
+    }
 }

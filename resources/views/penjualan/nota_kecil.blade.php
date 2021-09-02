@@ -86,25 +86,24 @@
 
     <table width="100%" style="border: 0;">
         <tr>
-            <td>Total Harga:</td>
-            <td class="text-right">{{ format_uang($penjualan->total_harga) }}</td>
-        </tr>
-        <tr>
             <td>Total Item:</td>
             <td class="text-right">{{ format_uang($penjualan->total_item) }}</td>
         </tr>
-   
+        <tr>
+            <td>Total Harga:</td>
+            <td class="text-right">{{ format_uang($penjualan->total_tagihan) }}</td>
+        </tr>
         <tr>
             <td>Total Bayar:</td>
-            <td class="text-right">{{ format_uang($penjualan->bayar) }}</td>
+            <td class="text-right">
+            <?php
+              echo  format_uang($penjualan->pembayaran->sum('bayar'));
+            ?>    
+            </td>
         </tr>
         <tr>
-            <td>Diterima:</td>
-            <td class="text-right">{{ format_uang($penjualan->diterima) }}</td>
-        </tr>
-        <tr>
-            <td>Kembali:</td>
-            <td class="text-right">{{ format_uang($penjualan->diterima - $penjualan->bayar) }}</td>
+            <td>#</td>
+            <td class="text-right">{{ format_uang($penjualan->total_tagihan - $penjualan->pembayaran->sum('bayar')) }}</td>
         </tr>
     </table>
 

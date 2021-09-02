@@ -33,8 +33,8 @@ class StockController extends Controller
             $oldqty = $request->oldqty;
             $stock->qty=$request->qty;
             $stock->update();
-            $deskripsi = 'Stock diubah dari data produk stock awal '.$oldqty.' menjadi '.$request->qty;
-            $this->catatRiwayat($id,$request->qty,$deskripsi);
+            $deskripsi = '<span class="label label-warning">+/-</span>';
+            $this->catatRiwayat($id,$oldqty,$request->qty,$deskripsi);
         });
     }
 }

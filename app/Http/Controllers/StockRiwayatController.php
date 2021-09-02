@@ -10,6 +10,7 @@ class StockRiwayatController extends Controller
     public function detailData($id_stock)
     {
         $data = StockRiwayat::whereIdStock($id_stock)->with('stock')->get();
+        
         return datatables()
             ->of($data)
             ->addIndexColumn()
@@ -24,6 +25,9 @@ class StockRiwayatController extends Controller
             })
             ->addColumn('merk', function ($data) {
             return $data->stock->produk->merk;
+            })
+            ->addColumn('old_stock', function ($data) {
+                return $data->old_stock;
             })
             ->addColumn('qty', function ($data) {
                 return $data->qty;
@@ -41,7 +45,7 @@ class StockRiwayatController extends Controller
                 return $tanggal .' : '. $waktu;
                 })
                 
-            ->rawColumns(['kode_produk','tanggal'])
+            ->rawColumns(['kode_produk','tanggal','deskripsi'])
             ->make(true);
     }
 }

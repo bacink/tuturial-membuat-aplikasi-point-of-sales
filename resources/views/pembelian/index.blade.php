@@ -26,8 +26,9 @@
                         <th>Tanggal</th>
                         <th>Supplier</th>
                         <th>Total Item</th>
-                        <th>Total Harga</th>
+                        <th>Total Belanja</th>
                         <th>Total Bayar</th>
+                        <th>Piutang</th>
                         <th width="15%"><i class="fa fa-cog"></i></th>
                     </thead>
                 </table>
@@ -56,8 +57,9 @@
                 {data: 'tanggal'},
                 {data: 'supplier'},
                 {data: 'total_item'},
-                {data: 'total_harga'},
+                {data: 'total_belanja'},
                 {data: 'bayar'},
+                {data: 'sisa'},
                 {data: 'aksi', searchable: false, sortable: false},
             ]
         });
