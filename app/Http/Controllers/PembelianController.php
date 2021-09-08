@@ -95,7 +95,9 @@ class PembelianController extends Controller
             $pembayaran->save();
 
             $detail = PembelianDetail::where('id_pembelian', $pembelian->id_pembelian)->get();
-            
+            $symbol = '+';
+            $sumber = 'pembelian';
+    
             foreach ($detail as $item) {
                 
                 $cekStock = Stock::whereIdProduk($item->id_produk)->first();
@@ -104,17 +106,15 @@ class PembelianController extends Controller
                     $cekStock->qty = $cekStock->qty + $item->jumlah;
                     $cekStock->update();
 
-                    $deskripsi = 'Diperoleh dari Belanja';
-                    $this->catatRiwayat($cekStock->id_stock,$cekStock->qty,$item->jumlah,$deskripsi);
+                    $this->catatRiwayat($cekStock->id_stock,$cekStock->qty,$item->jumlah,$symbol,$sumber);
                     
                 }else{
                     $stock = new Stock();
                     $stock->id_produk = $item->id_produk;
                     $stock->qty = $item->jumlah;
                     $stock->save();
-                    $deskripsi = '<span class="label label-success">+</span>';
                     
-                    $this->catatRiwayat($stock->id_stock,0,$item->jumlah,$deskripsi);
+                    $this->catatRiwayat($stock->id_stock,0,$item->jumlah,$symbol,$sumber);
                     
                 }
 

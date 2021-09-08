@@ -102,7 +102,10 @@
                     data: 'old_stock'
                 },
                 {
-                    data: 'qty'
+                    data: 'symbol'
+                },
+                {
+                    data: 'current_stock'
                 },
                 {
                     data: 'deskripsi'

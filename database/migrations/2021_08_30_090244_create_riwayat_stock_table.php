@@ -19,7 +19,8 @@ class CreateRiwayatStockTable extends Migration
             $table->unsignedInteger('id_stock');
             $table->integer('old_stock');
             $table->integer('qty');
-            $table->string('deskripsi');
+            $table->string('symbol');
+            $table->enum('sumber',['pembelian','penjualan','adjust']);
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('id_stock')->references('id_stock')->on('stock');

@@ -62,9 +62,10 @@ class NewPenjualanController extends Controller
                 $stock = Stock::whereIdProduk($row->id_produk)->first();
                 $newQtyStock = ($stock->qty) - ($row->jumlah);
                 
-                $deskripsi = '<span class="label label-danger">-</span>';
+                $symbol = '-';
+                $sumber = 'penjualan';
                 
-                $this->catatRiwayat($stock->id_stock,$stock->qty,$row->jumlah,$deskripsi);
+                $this->catatRiwayat($stock->id_stock,$stock->qty,$row->jumlah,$symbol,$sumber);
                 $stock->qty = $newQtyStock;
                 $stock->update();
             }    

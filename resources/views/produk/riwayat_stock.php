@@ -16,6 +16,7 @@
                         <th>Merk</th>
                         <th>Old Stock</th>
                         <th>Qty</th>
+                        <th>Current Stock</th>    
                         <th>Deskripsi</th>
                         <th>Tanggal</th>
                     </thead>

@@ -26,15 +26,24 @@ class StockController extends Controller
 
     public function update(Request $request, $id)
     {
-       
+
         $stock = Stock::find($id);
-       
-        DB::transaction(function () use ($request,$stock,$id) {
+
+        DB::transaction(function () use ($request, $stock, $id) {
             $oldqty = $request->oldqty;
-            $stock->qty=$request->qty;
+            $stock->qty = $request->qty;
             $stock->update();
-            $deskripsi = '<span class="label label-warning">+/-</span>';
-            $this->catatRiwayat($id,$oldqty,$request->qty,$deskripsi);
+
+            if ($oldqty < $request->qty) {
+                $selisih = $request->qty - $oldqty;
+                $symbol = '<strong class="text-success">+</strong>' . $selisih;
+            } else {
+                $selisih = $oldqty - $request->qty;
+                $symbol = '-';
+                $symbol = '<strong class="text-danger">+</strong>' . $selisih;
+            }
+            $sumber = 'adjust';
+            $this->catatRiwayat($id, $oldqty, $request->qty, $symbol, $sumber);
         });
     }
 }
